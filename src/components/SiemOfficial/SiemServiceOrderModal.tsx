@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Printer, X, FileSpreadsheet } from 'lucide-react';
 import { ServiceOrder } from '../../types';
 import { SiemLogo } from './SiemLogo';
@@ -10,6 +11,22 @@ interface SiemServiceOrderModalProps {
 
 export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ order, onClose }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Manage body print isolation class and escape key listener
+  useEffect(() => {
+    document.body.classList.add('siem-printing-document');
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.classList.remove('siem-printing-document');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
   const equipments = order.equipments && order.equipments.length > 0 ? order.equipments : [
     {
@@ -97,7 +114,9 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
     document.body.removeChild(link);
   };
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-2 sm:p-4 overflow-y-auto backdrop-blur-xs siem-modal-overlay-print">
       {/* Dynamic landscape print configuration */}
       <style>
@@ -377,7 +396,8 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

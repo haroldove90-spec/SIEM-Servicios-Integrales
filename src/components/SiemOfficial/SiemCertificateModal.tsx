@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Printer, X, FileSpreadsheet, Edit3 } from 'lucide-react';
 import { ServiceOrder, EquipmentItem, CalibrationCertificateData } from '../../types';
 import { SiemLogo } from './SiemLogo';
@@ -17,6 +18,22 @@ export const SiemCertificateModal: React.FC<SiemCertificateModalProps> = ({
   onOpenEditor,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Manage body print isolation class and escape key listener
+  useEffect(() => {
+    document.body.classList.add('siem-printing-document');
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.classList.remove('siem-printing-document');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
 
   // Use existing certificate or default values inspired by the user's PDF
   const cert: CalibrationCertificateData = equipment.certificate || {
@@ -109,7 +126,9 @@ export const SiemCertificateModal: React.FC<SiemCertificateModalProps> = ({
     document.body.removeChild(link);
   };
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-2 sm:p-4 overflow-y-auto backdrop-blur-xs siem-modal-overlay-print">
       {/* Strict 2-Page Portrait Print Styling */}
       <style>
@@ -590,7 +609,8 @@ export const SiemCertificateModal: React.FC<SiemCertificateModalProps> = ({
         </div>
 
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

@@ -5,6 +5,41 @@
    ========================================================================== */
 
 @media print {
+  /* 
+   * CRITICAL: Completely hide the application root, dashboard, navigation,
+   * sidebars, order tables, filters, and all non-document UI from the print output.
+   */
+  #root,
+  body.siem-printing-document #root,
+  body:has(.siem-modal-overlay-print) #root {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Any other direct child of body that is not the active print modal */
+  body > *:not(.siem-modal-overlay-print) {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide screen-only toolbars, actions, close buttons */
+  .print\:hidden,
+  .no-print,
+  button {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
   /* Force exact background colors, borders and graphics */
   *,
   *::before,
@@ -38,6 +73,7 @@
   .siem-modal-overlay-print {
     position: static !important;
     display: block !important;
+    visibility: visible !important;
     background: transparent !important;
     backdrop-filter: none !important;
     padding: 0 !important;
@@ -85,3 +121,4 @@
     break-inside: avoid !important;
   }
 }
+
