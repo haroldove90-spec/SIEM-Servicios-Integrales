@@ -1,6 +1,7 @@
-import React from 'react';
-import { Printer, Download, X, FileSpreadsheet, CheckCircle2 } from 'lucide-react';
+import React, { useRef } from 'react';
+import { Printer, X, FileSpreadsheet } from 'lucide-react';
 import { ServiceOrder } from '../../types';
+import { SiemLogo } from './SiemLogo';
 
 interface SiemServiceOrderModalProps {
   order: ServiceOrder;
@@ -8,6 +9,8 @@ interface SiemServiceOrderModalProps {
 }
 
 export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ order, onClose }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const equipments = order.equipments && order.equipments.length > 0 ? order.equipments : [
     {
       id: 'eq-default',
@@ -25,6 +28,10 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
   ];
 
   const handlePrint = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo(0, 0);
+    }
+    window.scrollTo(0, 0);
     window.print();
   };
 
@@ -91,18 +98,44 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-2 sm:p-4 overflow-y-auto backdrop-blur-xs">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/75 p-2 sm:p-4 overflow-y-auto backdrop-blur-xs siem-modal-overlay-print">
+      {/* Dynamic landscape print configuration */}
+      <style>
+        {`
+          @media print {
+            @page {
+              size: landscape;
+              margin: 6mm 8mm;
+            }
+            .siem-order-sheet {
+              width: 100% !important;
+              max-width: 100% !important;
+              min-width: 0 !important;
+              box-shadow: none !important;
+              border: 1.5px solid #1a4a75 !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+            }
+          }
+        `}
+      </style>
+
       {/* Container */}
-      <div className="bg-white w-full max-w-5xl rounded-lg shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-300 print:border-none print:shadow-none print:m-0 print:p-0">
+      <div className="bg-white w-full max-w-6xl rounded-lg shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-300 siem-modal-content-print print:border-none print:shadow-none print:m-0 print:p-0">
         
         {/* Top toolbar (hidden in print) */}
-        <div className="bg-slate-900 text-white px-5 py-3 flex items-center justify-between print:hidden">
+        <div className="bg-slate-900 text-white px-5 py-3 flex items-center justify-between print:hidden shrink-0">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-sm tracking-wide uppercase text-blue-400">
-              Documento Oficial
+            <span className="font-bold text-xs tracking-wider uppercase px-2 py-0.5 rounded bg-blue-600 text-white">
+              Orden Oficial
             </span>
             <span className="text-slate-400 text-xs">•</span>
-            <span className="text-sm font-semibold">Orden de Servicio #{order.folio}</span>
+            <span className="text-sm font-semibold">Folio: {order.folio}</span>
+            <span className="text-xs text-slate-400 hidden sm:inline">
+              (Formato Horizontal Optimizado para Impresión)
+            </span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -112,15 +145,15 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
               title="Exportar datos a CSV / Excel"
             >
               <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-              <span>Exportar Excel/CSV</span>
+              <span className="hidden md:inline">Exportar Excel/CSV</span>
             </button>
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded shadow-xs transition"
-              title="Imprimir o Guardar en PDF"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white rounded shadow-xs transition"
+              title="Imprimir o Guardar en PDF (Horizontal)"
             >
               <Printer className="w-4 h-4" />
-              <span>Imprimir / Guardar en PDF</span>
+              <span>Imprimir / PDF (Horizontal)</span>
             </button>
             <button
               onClick={onClose}
@@ -131,82 +164,103 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
           </div>
         </div>
 
-        {/* Printable Paper Canvas (exact layout from user's PDF) */}
-        <div className="p-6 sm:p-10 bg-white overflow-x-auto text-slate-900 font-sans print:p-0">
-          
-          <div className="min-w-[780px] max-w-[950px] mx-auto border-2 border-[#1a4a75] text-[11px] leading-tight">
+        {/* Printable Paper Canvas */}
+        <div
+          ref={scrollContainerRef}
+          className="p-4 sm:p-8 bg-slate-100 overflow-x-auto text-slate-900 font-sans print:bg-white print:p-0 siem-printable-area"
+        >
+          <div className="w-full max-w-[1020px] mx-auto bg-white border-2 border-[#1a4a75] text-[11px] leading-tight shadow-md siem-order-sheet">
             
-            {/* Header Title */}
-            <div className="bg-[#b9d3ee] border-b-2 border-[#1a4a75] py-2 text-center">
-              <h1 className="text-base font-black tracking-wider text-[#103050] uppercase font-sans">
-                ORDEN DE SERVICIO
-              </h1>
+            {/* Header: Official Logo + Title + Folio */}
+            <div className="p-3 border-b-2 border-[#1a4a75] bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="shrink-0">
+                <SiemLogo className="h-14" />
+              </div>
+
+              <div className="text-center flex-1">
+                <div className="inline-block bg-[#b9d3ee] border border-[#1a4a75] px-6 py-1.5 rounded-xs shadow-2xs">
+                  <h1 className="text-base sm:text-lg font-black tracking-widest text-[#0a2744] uppercase font-sans">
+                    ORDEN DE SERVICIO
+                  </h1>
+                </div>
+                <p className="text-[9px] text-slate-600 font-bold uppercase tracking-wider mt-1">
+                  Servicios Integrales en Equipos de Medición
+                </p>
+              </div>
+
+              <div className="shrink-0 text-right">
+                <div className="bg-[#103050] text-white px-3 py-1 text-xs font-black tracking-wider uppercase rounded-xs">
+                  FOLIO: {order.folio}
+                </div>
+                <div className="text-[10px] font-bold text-slate-700 mt-1">
+                  Recepción: <span className="font-mono">{order.fechaRecepcion || order.calibrationDate}</span>
+                </div>
+                <div className="text-[10px] font-bold text-slate-700">
+                  Entrega Est.: <span className="font-mono">{order.fechaEntrega || 'Por programar'}</span>
+                </div>
+              </div>
             </div>
 
-            {/* Row 1: ELABORO, F. RECEPCIÓN, F. ENTREGA, ORDEN DE SERVICIO */}
-            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
-              <div className="col-span-3 p-1.5 bg-[#dbe8f5] font-bold text-center uppercase flex items-center justify-center">
+            {/* Row 1: ELABORÓ, F. RECEPCIÓN, F. ENTREGA, ORDEN */}
+            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75] bg-white text-[10.5px]">
+              <div className="col-span-2 p-1.5 bg-[#dbe8f5] font-bold text-center uppercase flex items-center justify-center">
                 ELABORÓ:
               </div>
-              <div className="col-span-2 p-1.5 font-medium flex items-center justify-center text-center">
-                {order.elaboro || order.technicianName || 'Ing. Ulises Contreras'}
+              <div className="col-span-4 p-1.5 font-medium flex items-center px-2">
+                {order.elaboro || order.technicianName || 'Ing. Cristian Ulises Contreras'}
               </div>
 
               <div className="col-span-2 p-1.5 bg-[#dbe8f5] font-bold text-center uppercase flex items-center justify-center text-[10px]">
                 F. RECEPCIÓN:
               </div>
-              <div className="col-span-1 p-1.5 text-center font-medium flex items-center justify-center">
+              <div className="col-span-1 p-1.5 text-center font-medium flex items-center justify-center font-mono">
                 {order.fechaRecepcion || order.calibrationDate}
               </div>
 
               <div className="col-span-2 p-1.5 bg-[#dbe8f5] font-bold text-center uppercase flex items-center justify-center text-[10px]">
                 F. ENTREGA:
               </div>
-              <div className="col-span-1 p-1.5 text-center font-medium flex items-center justify-center">
+              <div className="col-span-1 p-1.5 text-center font-medium flex items-center justify-center font-mono">
                 {order.fechaEntrega || 'Pendiente'}
-              </div>
-
-              <div className="col-span-1 p-1.5 bg-[#103050] text-white font-bold text-center uppercase flex items-center justify-center text-[10px]">
-                {order.folio}
               </div>
             </div>
 
             {/* Row 2: DATOS DEL CLIENTE */}
-            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75] bg-white text-[10.5px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 RAZÓN SOCIAL:
               </div>
-              <div className="col-span-5 p-1.5 font-medium">
+              <div className="col-span-5 p-1.5 font-semibold text-slate-900 flex items-center">
                 {order.clientName}
               </div>
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 TELÉFONO:
               </div>
-              <div className="col-span-3 p-1.5 font-medium">
-                {order.clientPhone || '81-8123-4567'}
+              <div className="col-span-3 p-1.5 font-medium flex items-center">
+                {order.clientPhone || '55-5678-1234'}
               </div>
             </div>
 
-            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75] bg-white text-[10.5px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 DIRECCIÓN:
               </div>
-              <div className="col-span-5 p-1.5 font-medium">
-                {order.clientAddress || 'Av. de las Industrias #1200, Apodaca, N.L.'}
+              <div className="col-span-5 p-1.5 font-medium flex items-center">
+                {order.clientAddress || 'Calzada de los Leones #450, Col. Las Águilas, CDMX'}
               </div>
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 ATENCIÓN:
               </div>
-              <div className="col-span-3 p-1.5 font-medium">
-                {order.clientContact || 'Ing. Roberto Garza'}
+              <div className="col-span-3 p-1.5 font-medium flex items-center">
+                {order.clientContact || 'Dra. Patricia Solís'}
               </div>
             </div>
 
-            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75] bg-white text-[10.5px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 CORREO:
               </div>
-              <div className="col-span-10 p-1.5 font-medium">
+              <div className="col-span-10 p-1.5 font-medium flex items-center">
                 {order.clientEmail || 'contacto@cliente.com'}
               </div>
             </div>
@@ -216,69 +270,68 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
               DATOS DEL CERTIFICADO
             </div>
 
-            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+            <div className="grid grid-cols-12 border-b border-[#1a4a75] divide-x divide-[#1a4a75] bg-white text-[10.5px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 RAZÓN SOCIAL:
               </div>
-              <div className="col-span-10 p-1.5 font-medium">
+              <div className="col-span-10 p-1.5 font-medium flex items-center">
                 {order.certRazonSocial || order.clientName}
               </div>
             </div>
 
-            <div className="grid grid-cols-12 border-b-2 border-[#1a4a75] divide-x divide-[#1a4a75]">
-              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px]">
+            <div className="grid grid-cols-12 border-b-2 border-[#1a4a75] divide-x divide-[#1a4a75] bg-white text-[10.5px]">
+              <div className="col-span-2 p-1.5 bg-[#eef4fa] font-bold uppercase text-[10px] flex items-center">
                 DIRECCIÓN:
               </div>
-              <div className="col-span-10 p-1.5 font-medium">
-                {order.certDireccion || order.clientAddress || 'Misma dirección fiscal'}
+              <div className="col-span-10 p-1.5 font-medium flex items-center">
+                {order.certDireccion || order.clientAddress || 'Planta Industrial Norte, CDMX'}
               </div>
             </div>
 
-            {/* TABLA DE INSTRUMENTOS (exact columns from PDF) */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-center border-collapse">
+            {/* TABLA DE INSTRUMENTOS (table-fixed 100% width, no horizontal scrolling) */}
+            <div className="w-full overflow-visible">
+              <table className="w-full table-fixed text-center border-collapse border-b border-[#1a4a75]">
                 <thead>
-                  <tr className="bg-[#dbe8f5] text-[#103050] font-bold text-[9.5px] uppercase border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
-                    <th className="p-1 w-8">No</th>
-                    <th className="p-1">INSTRUMENTO</th>
-                    <th className="p-1">MARCA</th>
-                    <th className="p-1">MODELO</th>
-                    <th className="p-1">SERIE</th>
-                    <th className="p-1">ID</th>
-                    <th className="p-1">VIGENCIA</th>
-                    <th className="p-1">SERVICIO</th>
-                    <th className="p-1">MAGNITUD</th>
-                    <th className="p-1">OBSERVACIONES</th>
+                  <tr className="bg-[#dbe8f5] text-[#103050] font-bold text-[9px] uppercase border-b border-[#1a4a75] divide-x divide-[#1a4a75]">
+                    <th className="p-1 w-[4%]">No</th>
+                    <th className="p-1 w-[18%]">INSTRUMENTO</th>
+                    <th className="p-1 w-[10%]">MARCA</th>
+                    <th className="p-1 w-[10%]">MODELO</th>
+                    <th className="p-1 w-[12%]">SERIE</th>
+                    <th className="p-1 w-[8%]">ID</th>
+                    <th className="p-1 w-[8%]">VIGENCIA</th>
+                    <th className="p-1 w-[8%]">SERVICIO</th>
+                    <th className="p-1 w-[8%]">MAGNITUD</th>
+                    <th className="p-1 w-[14%]">OBSERVACIONES</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1a4a75]">
+                <tbody className="divide-y divide-[#1a4a75] bg-white">
                   {equipments.map((eq, idx) => (
-                    <tr key={eq.id || idx} className="divide-x divide-[#1a4a75] text-[10px] hover:bg-blue-50/40">
-                      <td className="p-1.5 font-bold">{eq.no || idx + 1}</td>
-                      <td className="p-1.5 font-semibold text-left">{eq.instrumento}</td>
-                      <td className="p-1.5">{eq.marca}</td>
-                      <td className="p-1.5">{eq.modelo}</td>
-                      <td className="p-1.5 font-mono text-[9px]">{eq.serie}</td>
-                      <td className="p-1.5 font-mono text-[9px] font-semibold">{eq.idInterno}</td>
-                      <td className="p-1.5">{eq.vigencia}</td>
-                      <td className="p-1.5">{eq.servicio}</td>
-                      <td className="p-1.5 font-medium text-blue-900">{eq.magnitud}</td>
-                      <td className="p-1.5 text-left text-[9px] text-slate-700">{eq.observaciones || '—'}</td>
+                    <tr key={eq.id || idx} className="divide-x divide-[#1a4a75] text-[9.5px]">
+                      <td className="p-1 font-bold">{eq.no || idx + 1}</td>
+                      <td className="p-1 font-semibold text-left break-words">{eq.instrumento}</td>
+                      <td className="p-1 break-words">{eq.marca}</td>
+                      <td className="p-1 break-words">{eq.modelo}</td>
+                      <td className="p-1 font-mono text-[9px] break-words">{eq.serie}</td>
+                      <td className="p-1 font-mono text-[9px] font-semibold break-words">{eq.idInterno}</td>
+                      <td className="p-1 break-words">{eq.vigencia}</td>
+                      <td className="p-1 break-words">{eq.servicio}</td>
+                      <td className="p-1 font-bold text-blue-900 break-words">{eq.magnitud}</td>
+                      <td className="p-1 text-left text-[8.5px] text-slate-700 break-words">{eq.observaciones || 'Condiciones óptimas sin daño físico.'}</td>
                     </tr>
                   ))}
-                  {/* Padding empty row if less than 3 */}
                   {equipments.length === 1 && (
-                    <tr className="divide-x divide-[#1a4a75] text-[10px] text-slate-300">
-                      <td className="p-1.5 font-bold">2</td>
-                      <td className="p-1.5 text-left">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
-                      <td className="p-1.5">—</td>
+                    <tr className="divide-x divide-[#1a4a75] text-[9.5px] text-slate-300">
+                      <td className="p-1 font-bold">2</td>
+                      <td className="p-1 text-left">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
+                      <td className="p-1">—</td>
                     </tr>
                   )}
                 </tbody>
@@ -286,23 +339,23 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
             </div>
 
             {/* Observaciones generales */}
-            <div className="border-t-2 border-[#1a4a75] p-2 min-h-[70px] bg-white">
-              <span className="font-bold uppercase text-[10px] block text-slate-800">
-                Observaciones:
+            <div className="p-2 min-h-[55px] bg-white border-b border-[#1a4a75]">
+              <span className="font-bold uppercase text-[9.5px] block text-slate-900">
+                Observaciones Generales:
               </span>
-              <p className="mt-1 text-[10.5px] text-slate-700 whitespace-pre-wrap">
-                {order.observacionesGenerales || order.equipmentNotes || 'El equipo se recibe para calibración en condiciones operativas estándar con accesorios completos.'}
+              <p className="mt-0.5 text-[10px] text-slate-700 leading-normal">
+                {order.observacionesGenerales || order.equipmentNotes || 'Equipo entregado con estuche original rígido y sonda de medición. Calibración directa de alta precisión.'}
               </p>
             </div>
 
             {/* Footer / Firmas */}
-            <div className="border-t border-[#1a4a75] pt-12 pb-4 px-8 bg-white grid grid-cols-12 gap-8 text-center text-[10.5px]">
+            <div className="py-5 px-10 bg-white grid grid-cols-12 gap-8 text-center text-[10px]">
               <div className="col-span-7 flex flex-col items-center">
                 <div className="w-full border-t border-slate-900 pt-1">
                   <span className="font-semibold text-slate-900 block">
                     {order.recibidoPor || 'Ing. Cristian Ulises Contreras H.'}
                   </span>
-                  <span className="text-[9.5px] uppercase font-bold text-slate-600">
+                  <span className="text-[9px] uppercase font-bold text-slate-600">
                     Nombre y Firma de quien recibe
                   </span>
                 </div>
@@ -313,18 +366,18 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
                   <span className="font-semibold text-slate-900 block">
                     {order.fechaFirmaRecibido || order.fechaRecepcion || order.calibrationDate}
                   </span>
-                  <span className="text-[9.5px] uppercase font-bold text-slate-600">
-                    Fecha
+                  <span className="text-[9px] uppercase font-bold text-slate-600">
+                    Fecha de Recepción
                   </span>
                 </div>
               </div>
             </div>
 
           </div>
-
         </div>
 
       </div>
     </div>
   );
 };
+
