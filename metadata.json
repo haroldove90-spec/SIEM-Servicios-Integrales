@@ -1,0 +1,6 @@
+{
+  "name": "Sistema Metrología",
+  "description": "Sistema de gestión de metrología, órdenes de servicio, certificados de calibración y portal para clientes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
