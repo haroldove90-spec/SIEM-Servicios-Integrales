@@ -457,7 +457,7 @@ export default function App() {
                 </span>
                 <span
                   className={`text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded ${
-                    isAdmin ? 'bg-slate-900 text-white' : 'bg-emerald-100 text-emerald-800'
+                    isAdmin ? 'bg-[#0A6EA2] text-white' : 'bg-emerald-100 text-emerald-800'
                   }`}
                 >
                   {isAdmin ? 'Admin' : 'Cliente'}

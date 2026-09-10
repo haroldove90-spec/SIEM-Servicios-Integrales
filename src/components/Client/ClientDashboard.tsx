@@ -254,7 +254,7 @@ export const ClientDashboard: React.FC<ClientDashboardProps> = ({
 
                 <button
                   onClick={() => onOpenOrderDetail(order)}
-                  className="w-full py-2.5 rounded bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider shadow transition flex items-center justify-center space-x-1.5"
+                  className="w-full py-2.5 rounded bg-[#0A6EA2] hover:bg-[#085a85] text-white font-bold text-xs uppercase tracking-wider shadow transition flex items-center justify-center space-x-1.5 cursor-pointer"
                 >
                   <span>Ver Detalle y Descargas</span>
                   <ChevronRight className="w-4 h-4" />

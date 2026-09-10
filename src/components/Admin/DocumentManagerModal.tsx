@@ -141,9 +141,9 @@ export const DocumentManagerModal: React.FC<DocumentManagerModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl overflow-hidden my-6 flex flex-col max-h-[92vh]">
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-indigo-600/30 rounded-lg border border-indigo-500/30 text-indigo-300">
+            <div className="p-2 bg-white/10 rounded-lg border border-white/20 text-white">
               <FileText className="w-5 h-5" />
             </div>
             <div>
@@ -151,11 +151,11 @@ export const DocumentManagerModal: React.FC<DocumentManagerModalProps> = ({
                 <h3 className="font-bold text-base sm:text-lg text-white">
                   Gestor Documental de la Orden
                 </h3>
-                <span className="font-mono bg-indigo-500/30 text-indigo-200 text-xs px-2 py-0.5 rounded font-bold border border-indigo-400/30">
+                <span className="font-mono bg-white/20 text-white text-xs px-2 py-0.5 rounded font-bold border border-white/30">
                   {order.folio}
                 </span>
               </div>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-white/80">
                 Cliente: <span className="font-semibold text-white">{order.clientName}</span> • Estatus: {order.status}
               </p>
             </div>
@@ -163,7 +163,7 @@ export const DocumentManagerModal: React.FC<DocumentManagerModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800 hover:bg-slate-700 transition"
+            className="text-white/80 hover:text-white p-2 rounded-lg bg-white/10 hover:bg-white/20 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>

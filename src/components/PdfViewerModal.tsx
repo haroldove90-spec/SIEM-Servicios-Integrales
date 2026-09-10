@@ -41,21 +41,21 @@ export const PdfViewerModal: React.FC<PdfViewerModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-3 sm:p-6 animate-in fade-in duration-200">
       <div className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="px-5 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+        <div className="px-5 py-4 bg-[#0A6EA2] text-white flex items-center justify-between border-b border-[#085a85]">
           <div className="flex items-center space-x-3 min-w-0">
-            <div className="p-2 bg-indigo-600/30 rounded-lg border border-indigo-500/30 text-indigo-300 shrink-0">
+            <div className="p-2 bg-white/10 rounded-lg border border-white/20 text-white shrink-0">
               <FileText className="w-5 h-5" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center space-x-2">
-                <h3 className="font-semibold text-base sm:text-lg text-slate-100 truncate">
+                <h3 className="font-semibold text-base sm:text-lg text-white truncate">
                   {document.name}
                 </h3>
-                <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-400/30 shrink-0">
+                <span className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-white/20 text-white border border-white/30 shrink-0">
                   {document.type}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 truncate mt-0.5">
+              <p className="text-xs text-white/80 truncate mt-0.5">
                 {folio ? `Orden: ${folio}` : ''} {clientName ? `• ${clientName}` : ''} • {formatBytes(document.size)} • Subido: {document.uploadDate}
               </p>
             </div>

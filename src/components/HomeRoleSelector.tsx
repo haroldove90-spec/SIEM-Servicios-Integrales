@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Building2, Lock, User as UserIcon, AlertCircle, Eye, EyeOff, LogIn, CheckCircle2 } from 'lucide-react';
+import { Lock, User as UserIcon, AlertCircle, Eye, EyeOff, LogIn, CheckCircle2 } from 'lucide-react';
 import { User, Client } from '../types';
 
 interface HomeRoleSelectorProps {
@@ -19,7 +19,7 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Active hardcoded credentials mapping for priority users
+  // Active credentials mapping for priority users
   const SPECIAL_CREDENTIALS: Record<string, { pass: string; user: User }> = {
     ucontreras: {
       pass: 'Cuch#960303',
@@ -116,7 +116,6 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
     );
 
     if (matchedAdmin) {
-      // If user has a defined password, check it; otherwise fallback
       if (matchedAdmin.password && matchedAdmin.password !== cleanPassword) {
         setError('Contraseña incorrecta.');
         return;
@@ -162,44 +161,30 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
     setError('Usuario o correo no registrado en el sistema SIEM.');
   };
 
-  const fillCredentials = (userOrEmail: string, pass: string) => {
-    setIdentifier(userOrEmail);
-    setPassword(pass);
-    setError(null);
-  };
-
   return (
-    <div className="min-h-screen bg-slate-100/80 flex flex-col items-center justify-center p-4 sm:p-6 font-sans antialiased selection:bg-slate-900 selection:text-white">
+    <div className="min-h-screen bg-slate-100/80 flex flex-col items-center justify-center p-4 sm:p-6 font-sans antialiased selection:bg-[#0A6EA2] selection:text-white">
       <div className="w-full max-w-md space-y-6 animate-in fade-in duration-300">
         
-        {/* LOGO DE SIEM - Ubicado arriba del formulario de acceso */}
-        <div className="text-center space-y-3">
+        {/* LOGO DE SIEM - Ubicado arriba del formulario de acceso sin texto adicional */}
+        <div className="text-center">
           <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-slate-200/90 transition-transform duration-200 hover:scale-[1.02]">
             <img
               src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-              alt="Logo SIEM Metrología"
+              alt="Logo SIEM"
               className="h-16 w-auto object-contain max-w-[260px]"
               referrerPolicy="no-referrer"
             />
-          </div>
-          <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight uppercase">
-              SIEM
-            </h1>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-0.5">
-              Sistema de Metrología & Calibración
-            </p>
           </div>
         </div>
 
         {/* FORMULARIO DE ACCESO AL SISTEMA */}
         <div className="bg-white rounded-2xl shadow-md border border-slate-200/90 overflow-hidden">
-          <div className="bg-slate-900 px-6 py-4 text-white">
-            <h2 className="text-sm font-extrabold uppercase tracking-wider text-slate-100 flex items-center space-x-2">
+          <div className="bg-[#0A6EA2] px-6 py-4 text-white">
+            <h2 className="text-sm font-extrabold uppercase tracking-wider text-white flex items-center space-x-2">
               <LogIn className="w-4 h-4 text-white shrink-0" />
               <span>Acceso al Sistema</span>
             </h2>
-            <p className="text-xs text-slate-300 mt-0.5">
+            <p className="text-xs text-blue-100 mt-0.5">
               Ingrese con su usuario o correo electrónico y contraseña
             </p>
           </div>
@@ -233,9 +218,9 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
                     type="text"
                     value={identifier}
                     onChange={(e) => setIdentifier(e.target.value)}
-                    placeholder="ucontreras, haroldo90 o correo"
+                    placeholder="Usuario o correo electrónico"
                     autoComplete="username"
-                    className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-slate-900 font-medium transition"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:border-[#0A6EA2] focus:bg-white text-slate-900 font-medium transition"
                   />
                 </div>
               </div>
@@ -255,7 +240,7 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     autoComplete="current-password"
-                    className="w-full pl-9 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-slate-900 font-medium transition"
+                    className="w-full pl-9 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:border-[#0A6EA2] focus:bg-white text-slate-900 font-medium transition"
                   />
                   <button
                     type="button"
@@ -268,93 +253,15 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
                 </div>
               </div>
 
-              {/* Botón de envío */}
+              {/* Botón de envío con tono azul #0A6EA2 */}
               <button
                 type="submit"
-                className="w-full py-3 bg-slate-900 hover:bg-slate-800 active:bg-black text-white font-extrabold text-xs uppercase tracking-wider rounded-lg shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
+                className="w-full py-3 bg-[#0A6EA2] hover:bg-[#085a85] active:bg-[#06476b] text-white font-extrabold text-xs uppercase tracking-wider rounded-lg shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>Ingresar al Sistema</span>
               </button>
             </form>
-
-            {/* Credenciales activas autorizadas */}
-            <div className="pt-4 border-t border-slate-200 space-y-2.5">
-              <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center">
-                Credenciales Activas Autorizadas
-              </p>
-
-              <div className="grid grid-cols-1 gap-2">
-                {/* Ulises Contreras */}
-                <button
-                  type="button"
-                  onClick={() => fillCredentials('ucontreras', 'Cuch#960303')}
-                  className="w-full p-2.5 rounded-lg border border-slate-200 bg-slate-50/80 hover:bg-slate-100 hover:border-slate-300 text-left transition flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="min-w-0 pr-2">
-                    <div className="flex items-center space-x-1.5">
-                      <Shield className="w-3.5 h-3.5 text-slate-800 shrink-0" />
-                      <p className="text-xs font-bold text-slate-900 truncate">
-                        Ulises Contreras
-                      </p>
-                    </div>
-                    <p className="text-[11px] text-slate-500 font-mono truncate">
-                      ucontreras • ucontreras@siemmx.com
-                    </p>
-                  </div>
-                  <span className="text-[10px] font-extrabold uppercase bg-slate-900 text-white px-2 py-1 rounded shrink-0 group-hover:bg-slate-800 transition">
-                    Cargar
-                  </span>
-                </button>
-
-                {/* Harold Anguiano Morales */}
-                <button
-                  type="button"
-                  onClick={() => fillCredentials('haroldo90', 'Chevropar#1970')}
-                  className="w-full p-2.5 rounded-lg border border-slate-200 bg-slate-50/80 hover:bg-slate-100 hover:border-slate-300 text-left transition flex items-center justify-between group cursor-pointer"
-                >
-                  <div className="min-w-0 pr-2">
-                    <div className="flex items-center space-x-1.5">
-                      <Shield className="w-3.5 h-3.5 text-slate-800 shrink-0" />
-                      <p className="text-xs font-bold text-slate-900 truncate">
-                        Harold Anguiano Morales
-                      </p>
-                    </div>
-                    <p className="text-[11px] text-slate-500 font-mono truncate">
-                      haroldo90 • haroldo90@hotmtmail.com
-                    </p>
-                  </div>
-                  <span className="text-[10px] font-extrabold uppercase bg-slate-900 text-white px-2 py-1 rounded shrink-0 group-hover:bg-slate-800 transition">
-                    Cargar
-                  </span>
-                </button>
-
-                {/* Cliente Ejemplo (Portal Cliente) */}
-                {clients.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => fillCredentials(clients[0].username, clients[0].passwordHash)}
-                    className="w-full p-2.5 rounded-lg border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 text-left transition flex items-center justify-between group cursor-pointer"
-                  >
-                    <div className="min-w-0 pr-2">
-                      <div className="flex items-center space-x-1.5">
-                        <Building2 className="w-3.5 h-3.5 text-emerald-800 shrink-0" />
-                        <p className="text-xs font-bold text-emerald-950 truncate">
-                          {clients[0].razonSocial} (Portal Cliente)
-                        </p>
-                      </div>
-                      <p className="text-[11px] text-emerald-700 font-mono truncate">
-                        {clients[0].username} • {clients[0].email}
-                      </p>
-                    </div>
-                    <span className="text-[10px] font-extrabold uppercase bg-emerald-700 text-white px-2 py-1 rounded shrink-0 group-hover:bg-emerald-800 transition">
-                      Cargar
-                    </span>
-                  </button>
-                )}
-              </div>
-            </div>
-
           </div>
         </div>
 

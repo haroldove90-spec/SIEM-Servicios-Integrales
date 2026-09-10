@@ -60,14 +60,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`hidden md:flex flex-col bg-slate-900 text-white border-r border-slate-800 transition-all duration-300 z-30 shrink-0 ${
+      className={`hidden md:flex flex-col bg-[#0A6EA2] text-white border-r border-[#085a85] transition-all duration-300 z-30 shrink-0 ${
         isCollapsed ? 'w-20' : 'w-64'
       }`}
     >
       {/* Sidebar Header */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
+      <div className="h-16 flex items-center justify-between px-4 border-b border-[#085a85]">
         <div className="flex items-center space-x-3 overflow-hidden">
-          <div className="h-9 w-9 bg-white/95 p-1 flex items-center justify-center rounded-md shrink-0 shadow-xs">
+          <div className="h-9 w-9 bg-white p-1 flex items-center justify-center rounded-md shrink-0 shadow-xs">
             <img
               src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
               alt="SIEM"
@@ -82,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </span>
               <span
                 className={`text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded inline-block mt-0.5 ${
-                  isAdmin ? 'bg-slate-800 text-slate-300' : 'bg-emerald-900 text-emerald-200'
+                  isAdmin ? 'bg-[#085a85] text-white' : 'bg-emerald-900 text-emerald-200'
                 }`}
               >
                 {isAdmin ? 'Admin Interno' : 'Portal Cliente'}
@@ -94,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Collapse Toggle Button */}
         <button
           onClick={onToggleCollapse}
-          className="p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition shrink-0 ml-1"
+          className="p-1.5 rounded bg-[#085a85] hover:bg-[#074b6e] text-white/90 hover:text-white transition shrink-0 ml-1 cursor-pointer"
           title={isCollapsed ? 'Expandir Menú' : 'Colapsar Menú'}
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -104,7 +104,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Navigation Modules */}
       <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
         {!isCollapsed && (
-          <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">
+          <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-white/70 mb-2">
             Módulos
           </p>
         )}
@@ -117,13 +117,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               title={isCollapsed ? item.label : undefined}
-              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition ${
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer ${
                 isActive
-                  ? 'bg-white text-slate-900 font-extrabold shadow-sm'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                  ? 'bg-white text-[#0A6EA2] font-extrabold shadow-sm'
+                  : 'text-white/85 hover:bg-[#085a85] hover:text-white'
               } ${isCollapsed ? 'justify-center px-0' : ''}`}
             >
-              <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-slate-900' : 'text-slate-400'}`} />
+              <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#0A6EA2]' : 'text-white/90'}`} />
               {!isCollapsed && <span className="truncate">{item.label}</span>}
             </button>
           );
@@ -131,18 +131,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Role Switcher & User Profile Info */}
-      <div className="p-3 border-t border-slate-800 space-y-2">
+      <div className="p-3 border-t border-[#085a85] space-y-2">
         {!isCollapsed ? (
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="w-full flex items-center justify-between p-2 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+              className="w-full flex items-center justify-between p-2 rounded bg-[#085a85] hover:bg-[#074b6e] text-white text-xs font-semibold transition cursor-pointer"
             >
               <div className="flex items-center space-x-2 truncate">
-                {isAdmin ? <Shield className="w-3.5 h-3.5 text-white" /> : <Building2 className="w-3.5 h-3.5 text-emerald-400" />}
+                {isAdmin ? <Shield className="w-3.5 h-3.5 text-white" /> : <Building2 className="w-3.5 h-3.5 text-emerald-300" />}
                 <span className="truncate text-[11px]">{currentUser.name || currentUser.username}</span>
               </div>
-              <ChevronDown className="w-3 h-3 text-slate-400 shrink-0 ml-1" />
+              <ChevronDown className="w-3 h-3 text-white/80 shrink-0 ml-1" />
             </button>
 
             {showRoleMenu && (
@@ -156,14 +156,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onSwitchRole('admin');
                   }}
                   className={`w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between ${
-                    isAdmin ? 'bg-slate-100 font-bold text-slate-900' : ''
+                    isAdmin ? 'bg-sky-50 font-bold text-[#0A6EA2]' : ''
                   }`}
                 >
                   <div className="flex items-center space-x-2">
-                    <Shield className="w-4 h-4 text-slate-900" />
-                    <span>Ulises Martínez (Admin)</span>
+                    <Shield className="w-4 h-4 text-[#0A6EA2]" />
+                    <span>Ulises Contreras (Admin)</span>
                   </div>
-                  {isAdmin && <span className="text-[10px] text-slate-900 font-bold uppercase">ACTIVO</span>}
+                  {isAdmin && <span className="text-[10px] text-[#0A6EA2] font-bold uppercase">ACTIVO</span>}
                 </button>
 
                 <div className="px-3 py-1.5 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 border-t">

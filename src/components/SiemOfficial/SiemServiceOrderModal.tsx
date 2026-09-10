@@ -145,14 +145,14 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
       <div className="bg-white w-full max-w-6xl rounded-lg shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-300 siem-modal-content-print print:border-none print:shadow-none print:m-0 print:p-0">
         
         {/* Top toolbar (hidden in print) */}
-        <div className="bg-slate-900 text-white px-5 py-3 flex items-center justify-between print:hidden shrink-0">
+        <div className="bg-[#0A6EA2] text-white px-5 py-3 flex items-center justify-between print:hidden shrink-0">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-xs tracking-wider uppercase px-2 py-0.5 rounded bg-blue-600 text-white">
+            <span className="font-bold text-xs tracking-wider uppercase px-2 py-0.5 rounded bg-white/20 text-white border border-white/30">
               Orden Oficial
             </span>
-            <span className="text-slate-400 text-xs">•</span>
+            <span className="text-white/60 text-xs">•</span>
             <span className="text-sm font-semibold">Folio: {order.folio}</span>
-            <span className="text-xs text-slate-400 hidden sm:inline">
+            <span className="text-xs text-white/80 hidden sm:inline">
               (Formato Horizontal Optimizado para Impresión)
             </span>
           </div>
@@ -160,15 +160,15 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
           <div className="flex items-center gap-2">
             <button
               onClick={handleExportCsv}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded border border-white/20 transition cursor-pointer"
               title="Exportar datos a CSV / Excel"
             >
-              <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+              <FileSpreadsheet className="w-4 h-4 text-emerald-300" />
               <span className="hidden md:inline">Exportar Excel/CSV</span>
             </button>
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white rounded shadow-xs transition"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-white text-[#0A6EA2] hover:bg-white/90 rounded shadow-xs transition cursor-pointer"
               title="Imprimir o Guardar en PDF (Horizontal)"
             >
               <Printer className="w-4 h-4" />
@@ -176,7 +176,7 @@ export const SiemServiceOrderModal: React.FC<SiemServiceOrderModalProps> = ({ or
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition"
+              className="p-1.5 text-white/80 hover:text-white rounded hover:bg-white/10 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

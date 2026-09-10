@@ -111,23 +111,23 @@ export const CalibrationEditorModal: React.FC<CalibrationEditorModalProps> = ({
       <div className="bg-white w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-200">
         
         {/* Header */}
-        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800">
+        <div className="bg-[#0A6EA2] text-white px-6 py-4 flex items-center justify-between border-b border-[#085a85]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-600">
+              <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/20 text-white border border-white/30">
                 Formato F-7.2
               </span>
               <h2 className="text-base font-bold">
                 Captura de Certificado de Calibración
               </h2>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
-              Equipo: <span className="text-white font-medium">{equipment.instrumento}</span> ({equipment.marca} {equipment.modelo}, Serie: {equipment.serie})
+            <p className="text-xs text-white/80 mt-0.5">
+              Equipo: <span className="text-white font-semibold">{equipment.instrumento}</span> ({equipment.marca} {equipment.modelo}, Serie: {equipment.serie})
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+            className="p-1.5 text-white/80 hover:text-white rounded-lg hover:bg-white/10 transition cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>

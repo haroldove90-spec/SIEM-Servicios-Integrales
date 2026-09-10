@@ -170,15 +170,15 @@ export const SiemCertificateModal: React.FC<SiemCertificateModalProps> = ({
       <div className="bg-white w-full max-w-4xl rounded-lg shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-300 siem-modal-content-print print:border-none print:shadow-none print:m-0 print:p-0">
         
         {/* Top toolbar (hidden in print) */}
-        <div className="bg-slate-900 text-white px-5 py-3 flex items-center justify-between print:hidden sticky top-0 z-30 shrink-0">
+        <div className="bg-[#0A6EA2] text-white px-5 py-3 flex items-center justify-between print:hidden sticky top-0 z-30 shrink-0">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-xs uppercase px-2 py-0.5 rounded bg-blue-600 text-white">
+            <span className="font-bold text-xs uppercase px-2 py-0.5 rounded bg-white/20 text-white border border-white/30">
               F-7.2 Rev. 1
             </span>
             <span className="text-sm font-semibold">
               Certificado Oficial: {cert.folioCertificado}
             </span>
-            <span className="text-slate-400 text-xs hidden sm:inline">
+            <span className="text-white/80 text-xs hidden sm:inline">
               ({equipment.instrumento} - {equipment.serie})
             </span>
           </div>
@@ -187,25 +187,25 @@ export const SiemCertificateModal: React.FC<SiemCertificateModalProps> = ({
             {onOpenEditor && (
               <button
                 onClick={onOpenEditor}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 transition"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded border border-white/20 transition cursor-pointer"
               >
-                <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+                <Edit3 className="w-3.5 h-3.5 text-amber-300" />
                 <span>Editar Datos</span>
               </button>
             )}
 
             <button
               onClick={handleExportCsv}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-white/10 hover:bg-white/20 text-white rounded border border-white/20 transition cursor-pointer"
               title="Exportar puntos a CSV / Excel"
             >
-              <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+              <FileSpreadsheet className="w-4 h-4 text-emerald-300" />
               <span className="hidden sm:inline">Exportar Excel</span>
             </button>
 
             <button
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white rounded shadow-xs transition"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold bg-white text-[#0A6EA2] hover:bg-white/90 rounded shadow-xs transition cursor-pointer"
               title="Imprimir las 2 páginas o guardar en PDF"
             >
               <Printer className="w-4 h-4" />
@@ -214,7 +214,7 @@ export const SiemCertificateModal: React.FC<SiemCertificateModalProps> = ({
 
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition"
+              className="p-1.5 text-white/80 hover:text-white rounded hover:bg-white/10 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

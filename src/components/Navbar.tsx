@@ -46,18 +46,23 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between h-16">
           {/* Brand logo & title */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-slate-900 flex items-center justify-center rounded-sm shrink-0">
-              <div className="w-4 h-4 border-2 border-white"></div>
+            <div className="h-9 flex items-center shrink-0">
+              <img
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+                alt="SIEM Logo"
+                className="h-8 w-auto object-contain max-w-[120px]"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-base tracking-tight text-slate-900 uppercase">
-                  Sistema Metrología
+                <span className="font-extrabold text-base tracking-tight text-slate-900 uppercase">
+                  SIEM
                 </span>
                 <span
                   className={`text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded ${
                     isAdmin
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white'
                       : 'bg-emerald-100 text-emerald-800'
                   }`}
                 >
@@ -78,9 +83,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <>
                 <button
                   onClick={() => setActiveTab('dashboard')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition cursor-pointer ${
                     activeTab === 'dashboard'
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -90,9 +95,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('clients')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition cursor-pointer ${
                     activeTab === 'clients'
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -102,9 +107,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('orders')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition cursor-pointer ${
                     activeTab === 'orders'
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -114,9 +119,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('profile')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition cursor-pointer ${
                     activeTab === 'profile'
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -128,9 +133,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <>
                 <button
                   onClick={() => setActiveTab('my-orders')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition cursor-pointer ${
                     activeTab === 'my-orders'
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -140,9 +145,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                 <button
                   onClick={() => setActiveTab('my-profile')}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition ${
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-xs font-semibold tracking-wide uppercase transition cursor-pointer ${
                     activeTab === 'my-profile'
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-[#0A6EA2] text-white shadow-xs'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   }`}
                 >
@@ -249,7 +254,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setActiveTab('dashboard')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
-                  activeTab === 'dashboard' ? 'bg-slate-900 text-white' : 'text-slate-600'
+                  activeTab === 'dashboard' ? 'bg-[#0A6EA2] text-white' : 'text-slate-600'
                 }`}
               >
                 Dashboard
@@ -257,7 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setActiveTab('clients')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
-                  activeTab === 'clients' ? 'bg-slate-900 text-white' : 'text-slate-600'
+                  activeTab === 'clients' ? 'bg-[#0A6EA2] text-white' : 'text-slate-600'
                 }`}
               >
                 Clientes
@@ -265,7 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setActiveTab('orders')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
-                  activeTab === 'orders' ? 'bg-slate-900 text-white' : 'text-slate-600'
+                  activeTab === 'orders' ? 'bg-[#0A6EA2] text-white' : 'text-slate-600'
                 }`}
               >
                 Órdenes
@@ -273,7 +278,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setActiveTab('profile')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
-                  activeTab === 'profile' ? 'bg-slate-900 text-white' : 'text-slate-600'
+                  activeTab === 'profile' ? 'bg-[#0A6EA2] text-white' : 'text-slate-600'
                 }`}
               >
                 Perfil
@@ -284,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setActiveTab('my-orders')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
-                  activeTab === 'my-orders' ? 'bg-slate-900 text-white' : 'text-slate-600'
+                  activeTab === 'my-orders' ? 'bg-[#0A6EA2] text-white' : 'text-slate-600'
                 }`}
               >
                 Mis Órdenes
@@ -292,7 +297,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 onClick={() => setActiveTab('my-profile')}
                 className={`px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider whitespace-nowrap ${
-                  activeTab === 'my-profile' ? 'bg-slate-900 text-white' : 'text-slate-600'
+                  activeTab === 'my-profile' ? 'bg-[#0A6EA2] text-white' : 'text-slate-600'
                 }`}
               >
                 Mi Cuenta

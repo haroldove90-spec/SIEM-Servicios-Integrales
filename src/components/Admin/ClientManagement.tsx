@@ -183,7 +183,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
 
         <button
           onClick={handleOpenAddModal}
-          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-100 transition flex items-center justify-center space-x-1.5 shrink-0"
+          className="px-4 py-2.5 rounded-xl bg-[#0A6EA2] hover:bg-[#085a85] text-white font-semibold text-xs shadow-md shadow-blue-100 transition flex items-center justify-center space-x-1.5 shrink-0 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Alta de Nuevo Cliente</span>
@@ -199,7 +199,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
             placeholder="Buscar por Razón Social, RFC, Contacto o Correo..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] text-slate-800"
           />
         </div>
 
@@ -208,7 +208,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="py-1.5 px-3 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-700 font-medium"
+            className="py-1.5 px-3 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] text-slate-700 font-medium"
           >
             <option value="all">Todos los Estatus</option>
             <option value="active">Activos</option>
@@ -318,9 +318,9 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden my-8">
-            <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Building2 className="w-5 h-5 text-indigo-400" />
+                <Building2 className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">Alta de Nuevo Cliente CRM</h3>
               </div>
               <button
@@ -472,14 +472,14 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
       {selectedClientForCredentials && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
-            <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Key className="w-5 h-5 text-teal-400" />
+                <Key className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">Generador de Credenciales</h3>
               </div>
               <button
                 onClick={() => setSelectedClientForCredentials(null)}
-                className="text-slate-400 hover:text-white p-1"
+                className="text-white/80 hover:text-white p-1 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -569,14 +569,14 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
       {selectedClientDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden my-8 max-h-[90vh] flex flex-col">
-            <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-2">
-                <Building2 className="w-5 h-5 text-indigo-400" />
+                <Building2 className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">Ficha Detallada del Cliente</h3>
               </div>
               <button
                 onClick={() => setSelectedClientDetail(null)}
-                className="text-slate-400 hover:text-white p-1"
+                className="text-white/80 hover:text-white p-1 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>

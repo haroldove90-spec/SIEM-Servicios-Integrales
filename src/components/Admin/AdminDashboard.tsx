@@ -69,7 +69,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </button>
           <button
             onClick={onOpenNewOrderModal}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider rounded shadow-sm transition flex items-center space-x-1.5"
+            className="px-4 py-2 bg-[#0A6EA2] hover:bg-[#085a85] text-white text-xs font-bold uppercase tracking-wider rounded shadow-sm transition flex items-center space-x-1.5 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4 text-white" />
             <span>Nueva Orden SIEM</span>

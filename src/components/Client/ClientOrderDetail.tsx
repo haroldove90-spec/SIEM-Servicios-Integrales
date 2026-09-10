@@ -103,9 +103,9 @@ export const ClientOrderDetail: React.FC<ClientOrderDetailProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden my-6 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-emerald-600/30 rounded-lg border border-emerald-500/30 text-emerald-300">
+            <div className="p-2 bg-white/10 rounded-lg border border-white/20 text-white">
               <FileCheck2 className="w-5 h-5" />
             </div>
             <div>
@@ -113,11 +113,11 @@ export const ClientOrderDetail: React.FC<ClientOrderDetailProps> = ({
                 <h3 className="font-bold text-base sm:text-lg text-white">
                   Detalle de Orden de Servicio
                 </h3>
-                <span className="font-mono bg-emerald-500/30 text-emerald-200 text-xs px-2 py-0.5 rounded font-bold border border-emerald-400/30">
+                <span className="font-mono bg-white/20 text-white text-xs px-2 py-0.5 rounded font-bold border border-white/30">
                   {order.folio}
                 </span>
               </div>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-white/80">
                 Empresa: <span className="font-semibold text-white">{client.razonSocial}</span>
               </p>
             </div>
