@@ -12,7 +12,8 @@ import {
   Shield,
   Building2,
   RotateCcw,
-  ChevronDown
+  ChevronDown,
+  Database
 } from 'lucide-react';
 import { User, Client } from '../types';
 
@@ -26,6 +27,7 @@ interface SidebarProps {
   clientsList: Client[];
   onSwitchRole: (role: 'admin' | 'client', clientId?: string) => void;
   onResetDemo: () => void;
+  onOpenSupabaseModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -38,6 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   clientsList,
   onSwitchRole,
   onResetDemo,
+  onOpenSupabaseModal,
 }) => {
   const isAdmin = currentUser.role === 'admin';
   const [showRoleMenu, setShowRoleMenu] = React.useState(false);
@@ -199,6 +202,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
             )}
           </div>
         ) : null}
+
+        {/* Supabase Cloud Connection & SQL Button */}
+        {onOpenSupabaseModal && (
+          <button
+            onClick={onOpenSupabaseModal}
+            title="Supabase Cloud & SQL"
+            className={`w-full flex items-center space-x-2 px-3 py-2 rounded bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 hover:text-white border border-emerald-800/50 transition text-xs font-semibold uppercase tracking-wider ${
+              isCollapsed ? 'justify-center px-0' : ''
+            }`}
+          >
+            <Database className="w-4 h-4 shrink-0 text-emerald-400" />
+            {!isCollapsed && <span>Supabase Cloud</span>}
+          </button>
+        )}
 
         {/* Logout Button */}
         <button

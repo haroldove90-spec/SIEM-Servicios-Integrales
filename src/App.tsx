@@ -31,7 +31,21 @@ import { ClientDashboard } from './components/Client/ClientDashboard';
 import { ClientOrderDetail } from './components/Client/ClientOrderDetail';
 import { ClientProfile } from './components/Client/ClientProfile';
 
-import { LogOut, Shield, Building2 } from 'lucide-react';
+import { LogOut, Shield, Building2, Database } from 'lucide-react';
+import { SupabaseStatusModal } from './components/SupabaseStatusModal';
+import {
+  fetchClientsSupabase,
+  upsertClientSupabase,
+  fetchOrdersSupabase,
+  upsertOrderSupabase,
+  deleteOrderSupabase,
+  fetchDocumentsSupabase,
+  upsertDocumentSupabase,
+  deleteDocumentSupabase,
+  fetchAuditLogsSupabase,
+  insertAuditLogSupabase,
+  supabase
+} from './lib/supabase';
 
 const ADMIN_USERS: User[] = [
   {
@@ -73,7 +87,11 @@ export default function App() {
   const [openNewClientModalTrigger, setOpenNewClientModalTrigger] = useState(false);
   const [openNewOrderModalTrigger, setOpenNewOrderModalTrigger] = useState(false);
 
-  // Initialize storage & load state on mount
+  // Supabase Cloud State
+  const [showSupabaseModal, setShowSupabaseModal] = useState<boolean>(false);
+  const [isSupabaseOnline, setIsSupabaseOnline] = useState<boolean>(false);
+
+  // Initialize storage & load state on mount (Hybrid Cloud + Local)
   useEffect(() => {
     initStorage();
     const storedUser = getCurrentUser();
@@ -91,6 +109,57 @@ export default function App() {
     if (storedUser) {
       setActiveTab(storedUser.role === 'admin' ? 'dashboard' : 'my-orders');
     }
+
+    // Cloud Synchronization from Supabase
+    const syncFromCloud = async () => {
+      try {
+        const [cloudOrders, cloudClients, cloudDocs, cloudLogs] = await Promise.all([
+          fetchOrdersSupabase(),
+          fetchClientsSupabase(),
+          fetchDocumentsSupabase(),
+          fetchAuditLogsSupabase()
+        ]);
+
+        if (cloudOrders && cloudOrders.length > 0) {
+          setOrders(cloudOrders);
+          saveStoredOrders(cloudOrders);
+          setIsSupabaseOnline(true);
+        }
+        if (cloudClients && cloudClients.length > 0) {
+          setClients(cloudClients);
+          saveStoredClients(cloudClients);
+          setIsSupabaseOnline(true);
+        }
+        if (cloudDocs && cloudDocs.length > 0) {
+          setDocuments(cloudDocs);
+          saveStoredDocuments(cloudDocs);
+        }
+        if (cloudLogs && cloudLogs.length > 0) {
+          setAuditLogs(cloudLogs);
+        }
+      } catch (err) {
+        console.warn('Supabase offline or tables pending:', err);
+      }
+    };
+
+    syncFromCloud();
+
+    // Realtime subscription to live updates
+    const channel = supabase
+      .channel('siem-live-sync')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'service_orders' }, () => {
+        fetchOrdersSupabase().then((latest) => {
+          if (latest) {
+            setOrders(latest);
+            saveStoredOrders(latest);
+          }
+        });
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Sync helpers to storage
@@ -179,6 +248,7 @@ export default function App() {
     };
     const updated = [newClient, ...clients];
     syncClients(updated);
+    upsertClientSupabase(newClient);
 
     addAuditLog(user?.name || 'Admin', 'Alta de Cliente', `Cliente "${newClient.razonSocial}" registrado con RFC ${newClient.rfc}`);
     setAuditLogs(getStoredAuditLogs());
@@ -188,6 +258,7 @@ export default function App() {
   const handleUpdateClient = (updatedClient: Client) => {
     const updated = clients.map((c) => (c.id === updatedClient.id ? updatedClient : c));
     syncClients(updated);
+    upsertClientSupabase(updatedClient);
 
     addAuditLog(user?.name || 'Admin', 'Actualización de Cliente', `Se actualizaron credenciales/datos para "${updatedClient.razonSocial}"`);
     setAuditLogs(getStoredAuditLogs());
@@ -203,6 +274,7 @@ export default function App() {
     };
     const updated = [newOrder, ...orders];
     syncOrders(updated);
+    upsertOrderSupabase(newOrder);
 
     addAuditLog(user?.name || 'Admin', 'Creación de Orden', `Se generó la orden de servicio ${newOrder.folio} para ${newOrder.clientName}`);
     setAuditLogs(getStoredAuditLogs());
@@ -212,6 +284,7 @@ export default function App() {
   const handleUpdateOrder = (updatedOrder: ServiceOrder) => {
     const updated = orders.map((o) => (o.id === updatedOrder.id ? updatedOrder : o));
     syncOrders(updated);
+    upsertOrderSupabase(updatedOrder);
 
     addAuditLog(user?.name || 'Admin', 'Modificación de Orden', `Se actualizó la orden ${updatedOrder.folio} a estatus "${updatedOrder.status}"`);
     setAuditLogs(getStoredAuditLogs());
@@ -225,6 +298,7 @@ export default function App() {
 
     syncOrders(updatedOrders);
     syncDocuments(updatedDocs);
+    deleteOrderSupabase(orderId);
 
     if (target) {
       addAuditLog(user?.name || 'Admin', 'Eliminación de Orden', `Se eliminó la orden de servicio ${target.folio}`);
@@ -241,6 +315,7 @@ export default function App() {
     };
     const updated = [newDoc, ...documents];
     syncDocuments(updated);
+    upsertDocumentSupabase(newDoc);
 
     const targetOrder = orders.find((o) => o.id === docData.orderId);
     addAuditLog(user?.name || 'Admin', 'Carga de PDF', `Se adjuntó "${newDoc.name}" (${newDoc.type}) a la orden ${targetOrder?.folio || docData.orderId}`);
@@ -252,6 +327,7 @@ export default function App() {
     const targetDoc = documents.find((d) => d.id === docId);
     const updated = documents.filter((d) => d.id !== docId);
     syncDocuments(updated);
+    deleteDocumentSupabase(docId);
 
     if (targetDoc) {
       addAuditLog(user?.name || 'Admin', 'Eliminación de PDF', `Se eliminó el archivo "${targetDoc.name}"`);
@@ -261,19 +337,24 @@ export default function App() {
 
   // Documents: Replace Document
   const handleReplaceDocument = (docId: string, newFileUrl: string, newSize: number, newName: string) => {
+    let replacedDoc: OrderDocument | null = null;
     const updated = documents.map((doc) => {
       if (doc.id === docId) {
-        return {
+        replacedDoc = {
           ...doc,
           name: newName,
           fileUrl: newFileUrl,
           size: newSize,
           uploadDate: new Date().toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' }),
         };
+        return replacedDoc;
       }
       return doc;
     });
     syncDocuments(updated);
+    if (replacedDoc) {
+      upsertDocumentSupabase(replacedDoc);
+    }
 
     addAuditLog(user?.name || 'Admin', 'Reemplazo de PDF', `Se reemplazó el archivo del documento ID ${docId} por "${newName}"`);
     setAuditLogs(getStoredAuditLogs());
@@ -281,13 +362,18 @@ export default function App() {
 
   // Update Client Password (from Client Profile)
   const handleUpdateClientPassword = (clientId: string, newPass: string) => {
+    let targetClient: Client | null = null;
     const updated = clients.map((c) => {
       if (c.id === clientId) {
-        return { ...c, passwordHash: newPass };
+        targetClient = { ...c, passwordHash: newPass };
+        return targetClient;
       }
       return c;
     });
     syncClients(updated);
+    if (targetClient) {
+      upsertClientSupabase(targetClient);
+    }
 
     addAuditLog(user?.name || 'Cliente', 'Cambio de Contraseña', `El cliente actualizó su clave de acceso al portal`);
     setAuditLogs(getStoredAuditLogs());
@@ -334,6 +420,7 @@ export default function App() {
         clientsList={clients}
         onSwitchRole={handleSwitchRole}
         onResetDemo={handleResetDemoData}
+        onOpenSupabaseModal={() => setShowSupabaseModal(true)}
       />
 
       {/* Main Workspace Column */}
@@ -363,15 +450,32 @@ export default function App() {
             </div>
           </div>
 
-          {/* Quick Logout Button */}
-          <button
-            onClick={handleLogout}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-600 border border-slate-200 text-xs font-bold uppercase tracking-wider transition"
-            title="Cerrar Sesión"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Cerrar Sesión</span>
-          </button>
+          {/* Right Header Controls */}
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setShowSupabaseModal(true)}
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300/80 text-xs font-semibold transition cursor-pointer shadow-xs"
+              title="Configuración de Supabase Cloud y SQL"
+            >
+              <Database className="w-3.5 h-3.5 text-emerald-600" />
+              <span className="hidden sm:inline">Supabase</span>
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  isSupabaseOnline ? 'bg-emerald-500 animate-pulse' : 'bg-emerald-400'
+                }`}
+              />
+            </button>
+
+            {/* Quick Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-red-50 text-slate-700 hover:text-red-600 border border-slate-200 text-xs font-bold uppercase tracking-wider transition"
+              title="Cerrar Sesión"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Cerrar Sesión</span>
+            </button>
+          </div>
         </header>
 
         {/* Main Content View */}
@@ -493,6 +597,12 @@ export default function App() {
           onViewPdf={(doc) => setViewingPdfDoc(doc)}
         />
       )}
+
+      {/* 4. Supabase Status & SQL Modal */}
+      <SupabaseStatusModal
+        isOpen={showSupabaseModal}
+        onClose={() => setShowSupabaseModal(false)}
+      />
     </div>
   );
 }
