@@ -62,7 +62,7 @@ const ADMIN_USERS: User[] = [
   {
     id: 'user-admin-harold',
     name: 'Harold Anguiano Morales',
-    email: 'haroldo90@hotmtmail.com',
+    email: 'haroldo90@hotmail.com',
     username: 'haroldo90',
     password: 'Chevropar#1970',
     role: 'admin',
@@ -452,7 +452,7 @@ export default function App() {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-sm text-slate-900 uppercase tracking-tight">
+                <span className="font-extrabold text-sm text-slate-900 uppercase tracking-tight hidden sm:inline">
                   SIEM
                 </span>
                 <span

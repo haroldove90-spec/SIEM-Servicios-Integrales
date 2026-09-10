@@ -269,7 +269,20 @@ const DEFAULT_SQL_FALLBACK = `-- SISTEMA METROLOGÍA SIEM - SUPABASE DATABASE SC
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 1. TABLA DE CLIENTES
+-- 1. TABLA DE USUARIOS ADMINISTRADORES
+CREATE TABLE IF NOT EXISTS public.admin_users (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    username TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'admin',
+    position TEXT,
+    phone TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- 2. TABLA DE CLIENTES
 CREATE TABLE IF NOT EXISTS public.clients (
     id TEXT PRIMARY KEY,
     razon_social TEXT NOT NULL,
@@ -285,7 +298,7 @@ CREATE TABLE IF NOT EXISTS public.clients (
     notes TEXT
 );
 
--- 2. TABLA DE ÓRDENES DE SERVICIO Y CERTIFICADOS F-7.2
+-- 3. TABLA DE ÓRDENES DE SERVICIO Y CERTIFICADOS F-7.2
 CREATE TABLE IF NOT EXISTS public.service_orders (
     id TEXT PRIMARY KEY,
     folio TEXT NOT NULL UNIQUE,
@@ -313,7 +326,7 @@ CREATE TABLE IF NOT EXISTS public.service_orders (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 3. TABLA DE DOCUMENTOS Y EXPEDIENTES
+-- 4. TABLA DE DOCUMENTOS Y EXPEDIENTES
 CREATE TABLE IF NOT EXISTS public.order_documents (
     id TEXT PRIMARY KEY,
     order_id TEXT REFERENCES public.service_orders(id) ON DELETE CASCADE,
@@ -327,7 +340,7 @@ CREATE TABLE IF NOT EXISTS public.order_documents (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 4. TABLA DE AUDITORÍA Y TRAZABILIDAD
+-- 5. TABLA DE AUDITORÍA Y TRAZABILIDAD
 CREATE TABLE IF NOT EXISTS public.audit_logs (
     id TEXT PRIMARY KEY,
     timestamp TEXT NOT NULL,
@@ -337,14 +350,34 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- POLÍTICAS RLS PERMISIVAS PARA ACCESO CON LLAVE ANON
+-- POLÍTICAS RLS PERMISIVAS
+ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.clients ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.service_orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.order_documents ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Permitir todo en admin_users" ON public.admin_users;
+CREATE POLICY "Permitir todo en admin_users" ON public.admin_users FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permitir todo en clients" ON public.clients;
 CREATE POLICY "Permitir todo en clients" ON public.clients FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permitir todo en service_orders" ON public.service_orders;
 CREATE POLICY "Permitir todo en service_orders" ON public.service_orders FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permitir todo en order_documents" ON public.order_documents;
 CREATE POLICY "Permitir todo en order_documents" ON public.order_documents FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Permitir todo en audit_logs" ON public.audit_logs;
 CREATE POLICY "Permitir todo en audit_logs" ON public.audit_logs FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
+
+-- INSERTAR USUARIOS ADMINISTRADORES OFICIALES
+INSERT INTO public.admin_users (id, name, email, username, password_hash, role, position, phone)
+VALUES 
+  ('user-admin-ulises', 'Ulises Contreras', 'ucontreras@siemmx.com', 'ucontreras', 'Cuch#960303', 'admin', 'Líder de Metrología / Admin SIEM', '81-1982-3344'),
+  ('user-admin-harold', 'Harold Anguiano Morales', 'haroldo90@hotmail.com', 'haroldo90', 'Chevropar#1970', 'admin', 'Administrador Metrología SIEM', '81-1823-9901')
+ON CONFLICT (id) DO UPDATE SET
+  email = EXCLUDED.email,
+  password_hash = EXCLUDED.password_hash;
 `;

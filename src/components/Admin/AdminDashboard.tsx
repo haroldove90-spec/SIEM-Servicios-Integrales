@@ -51,7 +51,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <span>MÉTRICA / PANEL ADMINISTRATIVO</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            Laboratorio de Metrología Interno
+            Servicios Integrales en Equipos de Medición
           </h1>
           <p className="text-xs text-slate-500 mt-1">
             Control de órdenes de servicio, calibraciones en proceso y repositorio de certificados oficiales ISO/IEC 17025.

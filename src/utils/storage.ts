@@ -33,13 +33,36 @@ export function initStorage(): void {
   if (!localStorage.getItem(STORAGE_KEYS.ADMIN_USERS)) {
     localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
   } else {
-    // Ensure Ulises and Harold are present in stored admin users
+    // Ensure Ulises and Harold are present and up to date in stored admin users
     try {
       const existing: User[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.ADMIN_USERS) || '[]');
-      const hasUlises = existing.some(u => u.username === 'ucontreras');
-      const hasHarold = existing.some(u => u.username === 'haroldo90');
-      if (!hasUlises || !hasHarold) {
+      const updated = existing.map(u => {
+        if (u.username === 'haroldo90' || u.email?.includes('haroldo90')) {
+          return {
+            ...u,
+            email: 'haroldo90@hotmail.com',
+            username: 'haroldo90',
+            password: 'Chevropar#1970'
+          };
+        }
+        if (u.username === 'ucontreras' || u.email === 'ucontreras@siemmx.com') {
+          return {
+            ...u,
+            email: 'ucontreras@siemmx.com',
+            username: 'ucontreras',
+            password: 'Cuch#960303'
+          };
+        }
+        return u;
+      });
+
+      const hasHarold = updated.some(u => u.username === 'haroldo90');
+      const hasUlises = updated.some(u => u.username === 'ucontreras');
+
+      if (!hasHarold || !hasUlises) {
         localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
+      } else {
+        localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(updated));
       }
     } catch {
       localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));

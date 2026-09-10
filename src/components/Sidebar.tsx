@@ -65,31 +65,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }`}
     >
       {/* Sidebar Header */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-[#085a85]">
-        <div className="flex items-center space-x-3 overflow-hidden">
-          <div className="h-9 w-9 bg-white p-1 flex items-center justify-center rounded-md shrink-0 shadow-xs">
-            <img
-              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-              alt="SIEM"
-              className="h-full w-full object-contain"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          {!isCollapsed && (
-            <div className="truncate">
-              <span className="font-extrabold text-sm tracking-tight text-white uppercase block leading-tight">
-                SIEM
-              </span>
-              <span
-                className={`text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded inline-block mt-0.5 ${
-                  isAdmin ? 'bg-[#085a85] text-white' : 'bg-emerald-900 text-emerald-200'
-                }`}
-              >
-                {isAdmin ? 'Admin Interno' : 'Portal Cliente'}
-              </span>
+      <div className="min-h-[4.5rem] py-3 flex items-center justify-between px-3 border-b border-[#085a85]">
+        {!isCollapsed ? (
+          <div className="flex items-center min-w-0 pr-1">
+            {/* Logo completo rectangular en su proporción original sin texto SIEM redundante */}
+            <div className="bg-white rounded-lg px-2.5 py-1.5 flex items-center justify-center shadow-xs">
+              <img
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+                alt="Logo SIEM"
+                className="h-10 w-auto max-w-[155px] object-contain"
+                referrerPolicy="no-referrer"
+              />
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="w-full flex items-center justify-center">
+            <div className="bg-white rounded-md p-1 flex items-center justify-center shadow-xs">
+              <img
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+                alt="Logo SIEM"
+                className="h-7 w-auto object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Collapse Toggle Button */}
         <button

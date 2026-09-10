@@ -15,7 +15,7 @@ export const INITIAL_ADMIN_USERS: User[] = [
   {
     id: 'user-admin-harold',
     name: 'Harold Anguiano Morales',
-    email: 'haroldo90@hotmtmail.com',
+    email: 'haroldo90@hotmail.com',
     username: 'haroldo90',
     password: 'Chevropar#1970',
     role: 'admin',

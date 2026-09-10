@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-base tracking-tight text-slate-900 uppercase">
+                <span className="font-extrabold text-base tracking-tight text-slate-900 uppercase hidden sm:inline">
                   SIEM
                 </span>
                 <span

@@ -28,10 +28,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }
 
     if (activeTab === 'admin') {
+      const cleanUser = username.trim().toLowerCase();
       const admin = adminUsers.find(
         (u) =>
-          u.username.toLowerCase() === username.trim().toLowerCase() ||
-          u.email.toLowerCase() === username.trim().toLowerCase()
+          u.username.toLowerCase() === cleanUser ||
+          u.email.toLowerCase() === cleanUser ||
+          ((cleanUser === 'haroldo90@hotmail.com' || cleanUser === 'haroldove90@gmail.com') && u.username === 'haroldo90')
       );
       if (admin) {
         onLoginSuccess(admin);

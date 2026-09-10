@@ -52,7 +52,20 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
       user: {
         id: 'user-admin-harold',
         name: 'Harold Anguiano Morales',
-        email: 'haroldo90@hotmtmail.com',
+        email: 'haroldo90@hotmail.com',
+        username: 'haroldo90',
+        password: 'Chevropar#1970',
+        role: 'admin',
+        position: 'Administrador Metrología SIEM',
+        phone: '81-1823-9901',
+      },
+    },
+    'haroldo90@hotmail.com': {
+      pass: 'Chevropar#1970',
+      user: {
+        id: 'user-admin-harold',
+        name: 'Harold Anguiano Morales',
+        email: 'haroldo90@hotmail.com',
         username: 'haroldo90',
         password: 'Chevropar#1970',
         role: 'admin',
@@ -65,7 +78,20 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
       user: {
         id: 'user-admin-harold',
         name: 'Harold Anguiano Morales',
-        email: 'haroldo90@hotmtmail.com',
+        email: 'haroldo90@hotmail.com',
+        username: 'haroldo90',
+        password: 'Chevropar#1970',
+        role: 'admin',
+        position: 'Administrador Metrología SIEM',
+        phone: '81-1823-9901',
+      },
+    },
+    'haroldove90@gmail.com': {
+      pass: 'Chevropar#1970',
+      user: {
+        id: 'user-admin-harold',
+        name: 'Harold Anguiano Morales',
+        email: 'haroldo90@hotmail.com',
         username: 'haroldo90',
         password: 'Chevropar#1970',
         role: 'admin',
