@@ -3,50 +3,34 @@ import { generateSamplePdfDataUrl } from '../utils/pdfGenerator';
 
 export const INITIAL_ADMIN_USERS: User[] = [
   {
-    id: 'user-admin-1',
-    name: 'Ulises Martínez',
-    email: 'ulises.martinez@metrologia.com.mx',
-    username: 'ulises.admin',
+    id: 'user-admin-ulises',
+    name: 'Ulises Contreras',
+    email: 'ucontreras@siemmx.com',
+    username: 'ucontreras',
+    password: 'Cuch#960303',
     role: 'admin',
-    position: 'Líder de Metrología / Admin',
-    phone: '81-1982-3344',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+    position: 'Líder de Metrología / Admin SIEM',
+    phone: '81-1982-3344'
   },
   {
-    id: 'user-admin-2',
-    name: 'Carlos Méndez',
-    email: 'carlos.mendez@metrologia.com.mx',
-    username: 'carlos.m',
+    id: 'user-admin-harold',
+    name: 'Harold Anguiano Morales',
+    email: 'haroldo90@hotmtmail.com',
+    username: 'haroldo90',
+    password: 'Chevropar#1970',
     role: 'admin',
-    position: 'Técnico de Masa y Presión',
+    position: 'Administrador Metrología SIEM',
     phone: '81-1823-9901'
   },
   {
-    id: 'user-admin-3',
-    name: 'Ana Laura Torres',
-    email: 'ana.torres@metrologia.com.mx',
-    username: 'ana.torres',
+    id: 'user-admin-1',
+    name: 'Carlos Méndez',
+    email: 'carlos.mendez@metrologia.com.mx',
+    username: 'carlos.m',
+    password: 'siem2026password',
     role: 'admin',
-    position: 'Técnica Metróloga - Temperatura',
-    phone: '81-1554-2011'
-  },
-  {
-    id: 'user-admin-4',
-    name: 'Jorge Ramos',
-    email: 'jorge.ramos@metrologia.com.mx',
-    username: 'jorge.r',
-    role: 'admin',
-    position: 'Técnico Metrólogo de Campo',
-    phone: '81-1200-4488'
-  },
-  {
-    id: 'user-admin-5',
-    name: 'María Elena Delgado',
-    email: 'maria.delgado@metrologia.com.mx',
-    username: 'maria.delgado',
-    role: 'admin',
-    position: 'Aseguramiento de Calidad',
-    phone: '81-1678-3000'
+    position: 'Técnico de Masa y Presión',
+    phone: '81-1823-9901'
   }
 ];
 

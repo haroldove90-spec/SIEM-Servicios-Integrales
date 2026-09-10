@@ -75,6 +75,7 @@ export interface User {
   name: string;
   email: string;
   username: string;
+  password?: string;
   role: UserRole;
   clientId?: string; // Set if user is a client
   position?: string;

@@ -12,7 +12,8 @@ import {
   addAuditLog,
   getCurrentUser,
   setCurrentUser,
-  resetDemoStorage
+  resetDemoStorage,
+  getStoredAdminUsers
 } from './utils/storage';
 
 import { HomeRoleSelector } from './components/HomeRoleSelector';
@@ -49,18 +50,31 @@ import {
 
 const ADMIN_USERS: User[] = [
   {
-    id: 'user-admin-1',
-    name: 'Ulises Martínez',
-    email: 'ulises.martinez@metrologia.com.mx',
-    username: 'ulises.admin',
+    id: 'user-admin-ulises',
+    name: 'Ulises Contreras',
+    email: 'ucontreras@siemmx.com',
+    username: 'ucontreras',
+    password: 'Cuch#960303',
     role: 'admin',
-    position: 'Líder de Metrología / Admin'
+    position: 'Líder de Metrología / Admin SIEM',
+    phone: '81-1982-3344'
   },
   {
-    id: 'user-admin-2',
+    id: 'user-admin-harold',
+    name: 'Harold Anguiano Morales',
+    email: 'haroldo90@hotmtmail.com',
+    username: 'haroldo90',
+    password: 'Chevropar#1970',
+    role: 'admin',
+    position: 'Administrador Metrología SIEM',
+    phone: '81-1823-9901'
+  },
+  {
+    id: 'user-admin-1',
     name: 'Carlos Méndez',
     email: 'carlos.mendez@metrologia.com.mx',
     username: 'carlos.m',
+    password: 'siem2026password',
     role: 'admin',
     position: 'Técnico de Masa y Presión'
   }
@@ -428,13 +442,18 @@ export default function App() {
         {/* Top App Header */}
         <header className="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20 shadow-xs">
           <div className="flex items-center space-x-3">
-            <div className="md:hidden w-7 h-7 bg-slate-900 flex items-center justify-center rounded-sm shrink-0">
-              <div className="w-3.5 h-3.5 border-2 border-white"></div>
+            <div className="h-10 flex items-center shrink-0">
+              <img
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+                alt="SIEM Logo"
+                className="h-8 w-auto object-contain max-w-[120px]"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <span className="font-extrabold text-sm text-slate-900 uppercase tracking-tight">
-                  Sistema Metrología
+                  SIEM
                 </span>
                 <span
                   className={`text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded ${
@@ -551,7 +570,7 @@ export default function App() {
 
         {/* Workspace Footer when logged in */}
         <footer className="border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-400 bg-white">
-          <p>© 2026 Sistema Metrología • Laboratorio de Calibración Acreditado ISO/IEC 17025</p>
+          <p>© 2026 SIEM • Sistema de Metrología • Laboratorio de Calibración Acreditado ISO/IEC 17025</p>
         </footer>
       </div>
 

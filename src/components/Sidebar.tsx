@@ -67,13 +67,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Sidebar Header */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
         <div className="flex items-center space-x-3 overflow-hidden">
-          <div className="w-8 h-8 bg-white flex items-center justify-center rounded-sm shrink-0">
-            <div className="w-4 h-4 border-2 border-slate-900"></div>
+          <div className="h-9 w-9 bg-white/95 p-1 flex items-center justify-center rounded-md shrink-0 shadow-xs">
+            <img
+              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+              alt="SIEM"
+              className="h-full w-full object-contain"
+              referrerPolicy="no-referrer"
+            />
           </div>
           {!isCollapsed && (
             <div className="truncate">
-              <span className="font-bold text-sm tracking-tight text-white uppercase block leading-tight">
-                Sistema Metrología
+              <span className="font-extrabold text-sm tracking-tight text-white uppercase block leading-tight">
+                SIEM
               </span>
               <span
                 className={`text-[9px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded inline-block mt-0.5 ${

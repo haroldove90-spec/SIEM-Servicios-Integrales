@@ -32,10 +32,43 @@ export function initStorage(): void {
   }
   if (!localStorage.getItem(STORAGE_KEYS.ADMIN_USERS)) {
     localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
+  } else {
+    // Ensure Ulises and Harold are present in stored admin users
+    try {
+      const existing: User[] = JSON.parse(localStorage.getItem(STORAGE_KEYS.ADMIN_USERS) || '[]');
+      const hasUlises = existing.some(u => u.username === 'ucontreras');
+      const hasHarold = existing.some(u => u.username === 'haroldo90');
+      if (!hasUlises || !hasHarold) {
+        localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
+      }
+    } catch {
+      localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
+    }
   }
-  if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
-    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(INITIAL_ADMIN_USERS[0]));
+  // Note: Do not auto-login, show access form on Home by default
+}
+
+// Admin Users
+export function getStoredAdminUsers(): User[] {
+  initStorage();
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.ADMIN_USERS);
+    if (!raw) return INITIAL_ADMIN_USERS;
+    const list: User[] = JSON.parse(raw);
+    const hasUlises = list.some(u => u.username === 'ucontreras');
+    const hasHarold = list.some(u => u.username === 'haroldo90');
+    if (!hasUlises || !hasHarold) {
+      localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
+      return INITIAL_ADMIN_USERS;
+    }
+    return list;
+  } catch {
+    return INITIAL_ADMIN_USERS;
   }
+}
+
+export function saveStoredAdminUsers(users: User[]): void {
+  localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(users));
 }
 
 // Clients
@@ -110,7 +143,7 @@ export function getCurrentUser(): User | null {
     const raw = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
     return raw ? JSON.parse(raw) : null;
   } catch {
-    return INITIAL_ADMIN_USERS[0];
+    return null;
   }
 }
 
