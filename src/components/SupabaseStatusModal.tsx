@@ -275,12 +275,19 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     username TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
+    password_hash TEXT,
     role TEXT NOT NULL DEFAULT 'admin',
     position TEXT,
     phone TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Asegurar columnas si la tabla ya existía previamente
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'admin';
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS position TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS avatar TEXT;
 
 -- 2. TABLA DE CLIENTES
 CREATE TABLE IF NOT EXISTS public.clients (

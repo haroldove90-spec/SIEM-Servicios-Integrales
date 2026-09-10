@@ -13,7 +13,8 @@ import {
   getCurrentUser,
   setCurrentUser,
   resetDemoStorage,
-  getStoredAdminUsers
+  getStoredAdminUsers,
+  saveStoredAdminUsers
 } from './utils/storage';
 
 import { HomeRoleSelector } from './components/HomeRoleSelector';
@@ -45,6 +46,7 @@ import {
   deleteDocumentSupabase,
   fetchAuditLogsSupabase,
   insertAuditLogSupabase,
+  fetchAdminUsersSupabase,
   supabase
 } from './lib/supabase';
 
@@ -127,11 +129,12 @@ export default function App() {
     // Cloud Synchronization from Supabase
     const syncFromCloud = async () => {
       try {
-        const [cloudOrders, cloudClients, cloudDocs, cloudLogs] = await Promise.all([
+        const [cloudOrders, cloudClients, cloudDocs, cloudLogs, cloudAdminUsers] = await Promise.all([
           fetchOrdersSupabase(),
           fetchClientsSupabase(),
           fetchDocumentsSupabase(),
-          fetchAuditLogsSupabase()
+          fetchAuditLogsSupabase(),
+          fetchAdminUsersSupabase()
         ]);
 
         if (cloudOrders && cloudOrders.length > 0) {
@@ -150,6 +153,9 @@ export default function App() {
         }
         if (cloudLogs && cloudLogs.length > 0) {
           setAuditLogs(cloudLogs);
+        }
+        if (cloudAdminUsers && cloudAdminUsers.length > 0) {
+          saveStoredAdminUsers(cloudAdminUsers);
         }
       } catch (err) {
         console.warn('Supabase offline or tables pending:', err);

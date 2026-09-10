@@ -1,6 +1,6 @@
 export type UserRole = 'admin' | 'client';
 
-export type OrderStatus = 'En Proceso' | 'Completada' | 'Entregada';
+export type OrderStatus = 'En Proceso' | 'Completada' | 'Entregada' | 'Cancelada';
 
 export type DocumentType = 
   | 'Certificado de Calibración'

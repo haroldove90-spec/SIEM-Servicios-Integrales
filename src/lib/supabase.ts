@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Client, ServiceOrder, OrderDocument, AuditLog } from '../types';
+import { Client, ServiceOrder, OrderDocument, AuditLog, User } from '../types';
 
 // Extract and sanitize URL and Anon Key
 const env = (import.meta as any).env || {};
@@ -196,6 +196,15 @@ export async function upsertClientSupabase(client: Client): Promise<boolean> {
   }
 }
 
+export async function deleteClientSupabase(clientId: string): Promise<boolean> {
+  try {
+    const { error } = await supabase.from('clients').delete().eq('id', clientId);
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
 // Orders Operations
 export async function fetchOrdersSupabase(): Promise<ServiceOrder[] | null> {
   try {
@@ -276,3 +285,53 @@ export async function insertAuditLogSupabase(log: AuditLog): Promise<boolean> {
     return false;
   }
 }
+
+// Admin Users Operations
+export const mapDbToUser = (row: any): User => ({
+  id: row.id,
+  name: row.name,
+  email: row.email,
+  username: row.username,
+  password: row.password_hash || row.password || (row.username === 'ucontreras' ? 'Cuch#960303' : 'Chevropar#1970'),
+  role: (row.role as any) || 'admin',
+  position: row.position || undefined,
+  phone: row.phone || undefined,
+  avatar: row.avatar || undefined,
+});
+
+export const mapUserToDb = (user: User) => ({
+  id: user.id,
+  name: user.name,
+  email: user.email,
+  username: user.username,
+  password_hash: user.password,
+  role: user.role,
+  position: user.position || null,
+  phone: user.phone || null,
+});
+
+export async function fetchAdminUsersSupabase(): Promise<User[] | null> {
+  try {
+    const { data, error } = await supabase.from('admin_users').select('*');
+    if (error || !data || data.length === 0) return null;
+    return data.map(mapDbToUser);
+  } catch {
+    return null;
+  }
+}
+
+export async function upsertAdminUserSupabase(user: User): Promise<boolean> {
+  try {
+    const payload = mapUserToDb(user);
+    let { error } = await supabase.from('admin_users').upsert(payload, { onConflict: 'id' });
+    if (error && error.message?.includes('password_hash')) {
+      const { password_hash, ...withoutPw } = payload;
+      const res = await supabase.from('admin_users').upsert(withoutPw, { onConflict: 'id' });
+      error = res.error;
+    }
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
