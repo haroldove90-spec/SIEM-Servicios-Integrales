@@ -81,6 +81,10 @@ export interface User {
   position?: string;
   phone?: string;
   avatar?: string;
+  specialty?: string;
+  cedula?: string;
+  active?: boolean;
+  createdAt?: string;
 }
 
 export interface Client {

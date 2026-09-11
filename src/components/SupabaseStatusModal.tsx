@@ -10,7 +10,12 @@ import {
   ExternalLink, 
   Code2, 
   Sparkles,
-  Server
+  Server,
+  Eye,
+  EyeOff,
+  Lock,
+  Key,
+  ShieldCheck
 } from 'lucide-react';
 import { checkSupabaseConnection, SUPABASE_CONFIG } from '../lib/supabase';
 
@@ -23,8 +28,14 @@ export const SupabaseStatusModal: React.FC<SupabaseStatusModalProps> = ({ isOpen
   const [checking, setChecking] = useState(false);
   const [status, setStatus] = useState<{ connected: boolean; tablesExist: boolean; message: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedAdminCreds, setCopiedAdminCreds] = useState(false);
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<'status' | 'sql'>('status');
   const [sqlContent, setSqlContent] = useState<string>('');
+
+  const adminEmail = 'ucontreras@siemmx.com';
+  const adminPassword = 'Cuch#960303';
+  const supabaseLoginUrl = 'https://supabase.com/dashboard';
 
   const sqlUrl = 'https://supabase.com/dashboard/project/' + SUPABASE_CONFIG.projectId + '/sql/new';
 
@@ -118,6 +129,101 @@ export const SupabaseStatusModal: React.FC<SupabaseStatusModalProps> = ({ isOpen
         <div className="p-6 overflow-y-auto flex-1 space-y-6">
           {activeTab === 'status' ? (
             <div className="space-y-5">
+              {/* Card de Acceso a Supabase para el Administrador */}
+              <div className="rounded-xl bg-linear-to-r from-emerald-950/50 to-slate-900/90 p-4 border border-emerald-500/30 space-y-3.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-emerald-500/20 pb-3">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-emerald-400 shrink-0" />
+                    <div>
+                      <h4 className="text-sm font-bold text-white">Cuenta de Administrador en Supabase</h4>
+                      <p className="text-xs text-emerald-300/80">Credenciales maestras para administrar la base de datos PostgreSQL</p>
+                    </div>
+                  </div>
+                  <a
+                    href="https://supabase.com/dashboard"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition-colors shrink-0"
+                  >
+                    <span>Acceder a Supabase</span>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  {/* Usuario */}
+                  <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                    <div>
+                      <span className="text-slate-400 block text-[11px] mb-0.5">Usuario / Correo:</span>
+                      <span className="font-mono text-white font-bold text-xs">{adminEmail}</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(adminEmail);
+                        setCopiedAdminCreds(true);
+                        setTimeout(() => setCopiedAdminCreds(false), 2000);
+                      }}
+                      className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+                      title="Copiar usuario"
+                    >
+                      <Copy className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+
+                  {/* Contraseña con ojito */}
+                  <div className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                    <div>
+                      <span className="text-slate-400 block text-[11px] mb-0.5">Contraseña Maestra:</span>
+                      <span className="font-mono text-emerald-300 font-bold text-xs tracking-wider">
+                        {showAdminPassword ? adminPassword : '••••••••••••'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => setShowAdminPassword(!showAdminPassword)}
+                        className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+                        title={showAdminPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
+                      >
+                        {showAdminPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(adminPassword);
+                          setCopiedAdminCreds(true);
+                          setTimeout(() => setCopiedAdminCreds(false), 2000);
+                        }}
+                        className="p-1.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+                        title="Copiar contraseña"
+                      >
+                        <Copy className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] text-slate-400">Panel web:</span>
+                    <a
+                      href="https://supabase.com/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-xs text-cyan-400 hover:text-cyan-300 underline inline-flex items-center gap-1 font-mono"
+                    >
+                      https://supabase.com/ <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </div>
+                  {copiedAdminCreds && (
+                    <span className="text-xs text-emerald-400 flex items-center gap-1">
+                      <Check className="h-3.5 w-3.5" /> ¡Copiado al portapapeles!
+                    </span>
+                  )}
+                </div>
+              </div>
+
               {/* Credentials Card */}
               <div className="rounded-xl bg-slate-950/60 p-4 border border-slate-800/80 space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Credenciales del Proyecto</h4>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { UserCheck, Shield, Key, CheckCircle2, User as UserIcon, Mail, Phone, Users, AlertCircle } from 'lucide-react';
+import { UserCheck, Shield, Key, CheckCircle2, User as UserIcon, Mail, Phone, Users, AlertCircle, Sparkles, ShieldCheck } from 'lucide-react';
 import { User } from '../../types';
 import { INITIAL_ADMIN_USERS } from '../../data/initialData';
+import { PasswordInput } from '../Common/PasswordInput';
+import { generateSecurePassword, getPasswordStrength } from '../../utils/credentialsHelper';
 
 interface AdminProfileProps {
   currentUser: User;
@@ -190,38 +192,58 @@ export const AdminProfile: React.FC<AdminProfileProps> = ({
               <label className="block text-xs font-bold text-slate-700 mb-1">
                 Contraseña Actual
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 placeholder="••••••••"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Nueva Contraseña
-              </label>
-              <input
-                type="password"
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-xs font-bold text-slate-700">
+                  Nueva Contraseña
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const secure = generateSecurePassword(12);
+                    setNewPassword(secure);
+                    setConfirmPassword(secure);
+                  }}
+                  className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-semibold flex items-center space-x-1 cursor-pointer"
+                  title="Generar contraseña segura con letras, números y símbolos"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Generar Contraseña Segura</span>
+                </button>
+              </div>
+              <PasswordInput
                 placeholder="Mínimo 6 caracteres"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
               />
+              {newPassword && (
+                <div className="flex items-center justify-between mt-1 text-[10px]">
+                  <span className="text-slate-500">Fortaleza:</span>
+                  <span className={`px-2 py-0.5 rounded font-bold ${getPasswordStrength(newPassword).colorClass}`}>
+                    {getPasswordStrength(newPassword).label}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">
                 Confirmar Nueva Contraseña
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 placeholder="Repita la nueva contraseña"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 font-mono"
               />
             </div>
 

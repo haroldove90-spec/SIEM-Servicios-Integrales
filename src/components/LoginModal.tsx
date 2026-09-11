@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Shield, Building2, Lock, User as UserIcon, KeyRound, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { User, Client } from '../types';
+import { PasswordInput } from './Common/PasswordInput';
 
 interface LoginModalProps {
   onLoginSuccess: (user: User) => void;
@@ -180,18 +181,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               <label className="block text-xs font-semibold text-slate-700 mb-1">
                 Contraseña
               </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                  <Lock className="w-4 h-4" />
-                </div>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:bg-white text-slate-800"
-                />
-              </div>
+              <PasswordInput
+                showLockIcon={true}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:bg-white text-slate-800"
+              />
             </div>
 
             <button

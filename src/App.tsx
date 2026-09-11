@@ -27,13 +27,16 @@ import { AdminDashboard } from './components/Admin/AdminDashboard';
 import { OrderManagement } from './components/Admin/OrderManagement';
 import { DocumentManagerModal } from './components/Admin/DocumentManagerModal';
 import { AdminProfile } from './components/Admin/AdminProfile';
+import { StaffManagement } from './components/Admin/StaffManagement';
+import { ClientManagement } from './components/Admin/ClientManagement';
 
 // Client Components
 import { ClientDashboard } from './components/Client/ClientDashboard';
 import { ClientOrderDetail } from './components/Client/ClientOrderDetail';
 import { ClientProfile } from './components/Client/ClientProfile';
+import { UserManualModal } from './components/UserManual/UserManualModal';
 
-import { LogOut, Shield, Building2, Database } from 'lucide-react';
+import { LogOut, Shield, Building2, Database, BookOpen } from 'lucide-react';
 import { SupabaseStatusModal } from './components/SupabaseStatusModal';
 import {
   fetchClientsSupabase,
@@ -89,6 +92,7 @@ export default function App() {
   const [orders, setOrders] = useState<ServiceOrder[]>([]);
   const [documents, setDocuments] = useState<OrderDocument[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
+  const [adminUsers, setAdminUsers] = useState<User[]>([]);
 
   // Navigation State
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -107,6 +111,9 @@ export default function App() {
   const [showSupabaseModal, setShowSupabaseModal] = useState<boolean>(false);
   const [isSupabaseOnline, setIsSupabaseOnline] = useState<boolean>(false);
 
+  // User Manual Modal State
+  const [showUserManualModal, setShowUserManualModal] = useState<boolean>(false);
+
   // Initialize storage & load state on mount (Hybrid Cloud + Local)
   useEffect(() => {
     initStorage();
@@ -115,12 +122,14 @@ export default function App() {
     const storedOrders = getStoredOrders();
     const storedDocs = getStoredDocuments();
     const storedLogs = getStoredAuditLogs();
+    const storedAdmins = getStoredAdminUsers();
 
     setUser(storedUser);
     setClients(storedClients);
     setOrders(storedOrders);
     setDocuments(storedDocs);
     setAuditLogs(storedLogs);
+    setAdminUsers(storedAdmins);
 
     if (storedUser) {
       setActiveTab(storedUser.role === 'admin' ? 'dashboard' : 'my-orders');
@@ -156,6 +165,7 @@ export default function App() {
         }
         if (cloudAdminUsers && cloudAdminUsers.length > 0) {
           saveStoredAdminUsers(cloudAdminUsers);
+          setAdminUsers(cloudAdminUsers);
         }
       } catch (err) {
         console.warn('Supabase offline or tables pending:', err);
@@ -281,6 +291,26 @@ export default function App() {
     upsertClientSupabase(updatedClient);
 
     addAuditLog(user?.name || 'Admin', 'Actualización de Cliente', `Se actualizaron credenciales/datos para "${updatedClient.razonSocial}"`);
+    setAuditLogs(getStoredAuditLogs());
+  };
+
+  // Staff / Personnel Management
+  const handleAddStaff = (newStaff: User) => {
+    const updated = [...adminUsers, newStaff];
+    setAdminUsers(updated);
+    saveStoredAdminUsers(updated);
+    addAuditLog(user?.name || 'Admin', 'Registro de Personal', `Personal "${newStaff.name}" (${newStaff.position || 'Técnico'}) registrado`);
+    setAuditLogs(getStoredAuditLogs());
+  };
+
+  const handleUpdateStaff = (updatedStaff: User) => {
+    const updated = adminUsers.map((u) => (u.id === updatedStaff.id ? updatedStaff : u));
+    setAdminUsers(updated);
+    saveStoredAdminUsers(updated);
+    if (user && user.id === updatedStaff.id) {
+      syncUser(updatedStaff);
+    }
+    addAuditLog(user?.name || 'Admin', 'Modificación de Personal', `Datos y credenciales de "${updatedStaff.name}" actualizados`);
     setAuditLogs(getStoredAuditLogs());
   };
 
@@ -416,7 +446,7 @@ export default function App() {
       <HomeRoleSelector
         onLoginSuccess={handleLoginSuccess}
         clients={clients}
-        adminUsers={ADMIN_USERS}
+        adminUsers={adminUsers.length > 0 ? adminUsers : ADMIN_USERS}
       />
     );
   }
@@ -441,6 +471,7 @@ export default function App() {
         onSwitchRole={handleSwitchRole}
         onResetDemo={handleResetDemoData}
         onOpenSupabaseModal={() => setShowSupabaseModal(true)}
+        onOpenUserManual={() => setShowUserManualModal(true)}
       />
 
       {/* Main Workspace Column */}
@@ -477,6 +508,16 @@ export default function App() {
 
           {/* Right Header Controls */}
           <div className="flex items-center space-x-2">
+            {/* User Manual & PDF Export Button */}
+            <button
+              onClick={() => setShowUserManualModal(true)}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-[#0A6EA2] border border-sky-300 text-xs font-bold transition cursor-pointer shadow-2xs"
+              title="Manual de Usuario y Operación (Descargar en PDF)"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-[#0A6EA2]" />
+              <span className="hidden sm:inline">Manual (PDF)</span>
+            </button>
+
             <button
               onClick={() => setShowSupabaseModal(true)}
               className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300/80 text-xs font-semibold transition cursor-pointer shadow-xs"
@@ -523,6 +564,7 @@ export default function App() {
                     setActiveTab('orders');
                     setOpenNewOrderModalTrigger(true);
                   }}
+                  onOpenUserManual={() => setShowUserManualModal(true)}
                 />
               )}
 
@@ -537,6 +579,28 @@ export default function App() {
                   onOpenDocumentManager={(orderId) => setManagingDocsOrderId(orderId)}
                   isCreateModalOpenInitially={openNewOrderModalTrigger}
                   onCloseCreateModal={() => setOpenNewOrderModalTrigger(false)}
+                />
+              )}
+
+              {activeTab === 'staff' && (
+                <StaffManagement
+                  staffList={adminUsers}
+                  onAddStaff={handleAddStaff}
+                  onUpdateStaff={handleUpdateStaff}
+                  currentUser={user}
+                />
+              )}
+
+              {activeTab === 'clients' && (
+                <ClientManagement
+                  clients={clients}
+                  orders={orders}
+                  documents={documents}
+                  onAddClient={handleAddClient}
+                  onUpdateClient={handleUpdateClient}
+                  onOpenOrderDocsModal={(orderId) => setManagingDocsOrderId(orderId)}
+                  isAddModalOpenInitially={openNewClientModalTrigger}
+                  onCloseAddModal={() => setOpenNewClientModalTrigger(false)}
                 />
               )}
 
@@ -627,6 +691,13 @@ export default function App() {
       <SupabaseStatusModal
         isOpen={showSupabaseModal}
         onClose={() => setShowSupabaseModal(false)}
+      />
+
+      {/* 5. User Manual & PDF Guide Modal */}
+      <UserManualModal
+        isOpen={showUserManualModal}
+        onClose={() => setShowUserManualModal(false)}
+        userRole={isAdmin ? 'admin' : 'client'}
       />
     </div>
   );

@@ -17,9 +17,18 @@ import {
   Filter,
   ExternalLink,
   ShieldCheck,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles,
+  Send,
+  Share2
 } from 'lucide-react';
 import { Client, ServiceOrder, OrderDocument } from '../../types';
+import { PasswordInput } from '../Common/PasswordInput';
+import {
+  generateSecurePassword,
+  getPasswordStrength,
+  shareCredentialsViaWhatsApp
+} from '../../utils/credentialsHelper';
 
 interface ClientManagementProps {
   clients: Client[];
@@ -283,21 +292,41 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
               </div>
 
               {/* Card Footer Actions */}
-              <div className="p-3 bg-white grid grid-cols-2 gap-2">
+              <div className="p-3 bg-white grid grid-cols-3 gap-2">
                 <button
                   onClick={() => setSelectedClientDetail(client)}
-                  className="px-3 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center justify-center space-x-1"
+                  className="px-2 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center justify-center space-x-1 cursor-pointer"
+                  title="Ver expediente técnico del cliente"
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  <span>Ficha Cliente</span>
+                  <span>Ficha</span>
                 </button>
 
                 <button
                   onClick={() => handleOpenCredentials(client)}
-                  className="px-3 py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold transition flex items-center justify-center space-x-1"
+                  className="px-2 py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold transition flex items-center justify-center space-x-1 cursor-pointer"
+                  title="Gestionar usuario y contraseña"
                 >
                   <Key className="w-3.5 h-3.5" />
-                  <span>Credenciales</span>
+                  <span>Claves</span>
+                </button>
+
+                <button
+                  onClick={() =>
+                    shareCredentialsViaWhatsApp({
+                      recipientName: client.contactName || client.razonSocial,
+                      companyName: client.razonSocial,
+                      username: client.username,
+                      password: client.passwordHash,
+                      phone: client.phone,
+                      roleOrPosition: 'Cliente Portal Web',
+                    })
+                  }
+                  className="px-2 py-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-xs font-semibold transition flex items-center justify-center space-x-1 cursor-pointer"
+                  title="Compartir credenciales y enlace oficial por WhatsApp"
+                >
+                  <Share2 className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>WhatsApp</span>
                 </button>
               </div>
             </div>
@@ -419,30 +448,50 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
               </div>
 
               {/* Optional Credential presets */}
-              <div className="border-t border-slate-200 pt-3 bg-indigo-50/50 p-3 rounded-xl border space-y-2">
-                <span className="text-xs font-bold text-indigo-900 block flex items-center space-x-1">
-                  <Key className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>Credenciales para Portal de Cliente (Opcional)</span>
-                </span>
+              <div className="border-t border-slate-200 pt-3 bg-indigo-50/50 p-3.5 rounded-xl border space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-indigo-900 flex items-center space-x-1">
+                    <Key className="w-3.5 h-3.5 text-indigo-600" />
+                    <span>Credenciales para Portal de Cliente (Opcional)</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const sec = generateSecurePassword(12);
+                      setFormData({ ...formData, passwordHash: sec });
+                    }}
+                    className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-semibold flex items-center space-x-1 cursor-pointer"
+                  >
+                    <Sparkles className="w-3 h-3 text-amber-500" />
+                    <span>Generar Clave Segura</span>
+                  </button>
+                </div>
                 <p className="text-[11px] text-slate-500">
-                  Si los deja en blanco, se generarán automáticamente.
+                  Si los deja en blanco, el sistema los creará automáticamente.
                 </p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <input
                     type="text"
                     placeholder="Usuario acceso"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    className="px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    className="px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
                   />
-                  <input
-                    type="text"
+                  <PasswordInput
                     placeholder="Contraseña"
                     value={formData.passwordHash}
                     onChange={(e) => setFormData({ ...formData, passwordHash: e.target.value })}
-                    className="px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    className="w-full py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
                   />
                 </div>
+                {formData.passwordHash && (
+                  <div className="flex items-center justify-between text-[10px]">
+                    <span className="text-slate-500">Seguridad de clave:</span>
+                    <span className={`px-2 py-0.5 rounded font-bold ${getPasswordStrength(formData.passwordHash).colorClass}`}>
+                      {getPasswordStrength(formData.passwordHash).label}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-end space-x-2 pt-2">
@@ -505,31 +554,72 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Contraseña de Acceso
-                  </label>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={genPassword}
-                      onChange={(e) => setGenPassword(e.target.value)}
-                      className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-slate-800"
-                    />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-bold text-slate-700">
+                      Contraseña de Acceso (Ver con el ojito)
+                    </label>
                     <button
                       type="button"
-                      onClick={() => setGenPassword('pass' + Math.floor(100000 + Math.random() * 900000))}
-                      className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold shrink-0"
+                      onClick={() => setGenPassword(generateSecurePassword(12))}
+                      className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-semibold flex items-center space-x-1 cursor-pointer"
+                      title="Generar contraseña segura con letras, números y símbolos"
                     >
-                      Regenerar
+                      <Sparkles className="w-3 h-3 text-amber-500" />
+                      <span>Generar Segura</span>
                     </button>
                   </div>
+                  <PasswordInput
+                    value={genPassword}
+                    onChange={(e) => setGenPassword(e.target.value)}
+                    className="w-full py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono text-slate-800"
+                  />
+                  {genPassword && (
+                    <div className="flex items-center justify-between mt-1 text-[10px]">
+                      <span className="text-slate-500">Nivel de seguridad:</span>
+                      <span className={`px-2 py-0.5 rounded font-bold ${getPasswordStrength(genPassword).colorClass}`}>
+                        {getPasswordStrength(genPassword).label}
+                      </span>
+                    </div>
+                  )}
                 </div>
+              </div>
+
+              {/* Botón destacado de WhatsApp */}
+              <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-emerald-900 flex items-center space-x-1.5">
+                    <Share2 className="w-4 h-4 text-emerald-600" />
+                    <span>Compartir acceso oficial</span>
+                  </span>
+                  <span className="text-[11px] text-emerald-700 font-medium">
+                    {selectedClientForCredentials.phone || 'Sin teléfono'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    shareCredentialsViaWhatsApp({
+                      recipientName: selectedClientForCredentials.contactName || selectedClientForCredentials.razonSocial,
+                      companyName: selectedClientForCredentials.razonSocial,
+                      username: genUsername,
+                      password: genPassword,
+                      phone: selectedClientForCredentials.phone,
+                      roleOrPosition: 'Acceso Portal Cliente',
+                    });
+                    setCopiedNotification(true);
+                    setTimeout(() => setCopiedNotification(false), 2500);
+                  }}
+                  className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
+                >
+                  <Share2 className="w-4 h-4" />
+                  <span>Enviar Credenciales por WhatsApp</span>
+                </button>
               </div>
 
               {copiedNotification && (
                 <div className="p-2.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs flex items-center space-x-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>¡Credenciales copiadas al portapapeles!</span>
+                  <span>¡Credenciales copiadas al portapapeles y listas para enviar!</span>
                 </div>
               )}
 
@@ -537,24 +627,24 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
                 <button
                   type="button"
                   onClick={handleCopyCredentials}
-                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg flex items-center space-x-1"
+                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg flex items-center space-x-1 cursor-pointer"
                 >
                   <Copy className="w-3.5 h-3.5" />
-                  <span>Copiar Info</span>
+                  <span>Copiar Datos</span>
                 </button>
 
                 <div className="flex items-center space-x-2">
                   <button
                     type="button"
                     onClick={() => setSelectedClientForCredentials(null)}
-                    className="px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                    className="px-3 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
                   >
                     Cancelar
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveCredentials}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow"
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow cursor-pointer"
                   >
                     Guardar Cambios
                   </button>

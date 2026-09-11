@@ -2,6 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard,
   Users,
+  Building2,
   ClipboardList,
   UserCheck,
   FileCheck2,
@@ -28,6 +29,8 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
   const adminNavItems = [
     { id: 'dashboard', label: 'Inicio', icon: LayoutDashboard },
     { id: 'orders', label: 'Órdenes', icon: ClipboardList },
+    { id: 'staff', label: 'Personal', icon: Users },
+    { id: 'clients', label: 'Clientes', icon: Building2 },
     { id: 'profile', label: 'Perfil', icon: UserCheck },
   ];
 

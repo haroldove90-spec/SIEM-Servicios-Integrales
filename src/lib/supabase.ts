@@ -297,6 +297,9 @@ export const mapDbToUser = (row: any): User => ({
   position: row.position || undefined,
   phone: row.phone || undefined,
   avatar: row.avatar || undefined,
+  specialty: row.specialty || undefined,
+  cedula: row.cedula || undefined,
+  active: row.active ?? true,
 });
 
 export const mapUserToDb = (user: User) => ({
@@ -308,6 +311,10 @@ export const mapUserToDb = (user: User) => ({
   role: user.role,
   position: user.position || null,
   phone: user.phone || null,
+  avatar: user.avatar || null,
+  specialty: user.specialty || null,
+  cedula: user.cedula || null,
+  active: user.active ?? true,
 });
 
 export async function fetchAdminUsersSupabase(): Promise<User[] | null> {
@@ -324,9 +331,19 @@ export async function upsertAdminUserSupabase(user: User): Promise<boolean> {
   try {
     const payload = mapUserToDb(user);
     let { error } = await supabase.from('admin_users').upsert(payload, { onConflict: 'id' });
-    if (error && error.message?.includes('password_hash')) {
-      const { password_hash, ...withoutPw } = payload;
-      const res = await supabase.from('admin_users').upsert(withoutPw, { onConflict: 'id' });
+    if (error) {
+      // Fallback if some new columns are not yet applied in remote schema
+      const basicPayload: any = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        username: user.username,
+        password_hash: user.password,
+        role: user.role,
+        position: user.position || null,
+        phone: user.phone || null,
+      };
+      const res = await supabase.from('admin_users').upsert(basicPayload, { onConflict: 'id' });
       error = res.error;
     }
     return !error;

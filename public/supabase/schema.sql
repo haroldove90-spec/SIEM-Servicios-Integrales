@@ -8,7 +8,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 2. TABLA DE USUARIOS INTERNOS / ADMINISTRADORES
+-- 2. TABLA DE USUARIOS INTERNOS / ADMINISTRADORES Y PERSONAL TÉCNICO
 CREATE TABLE IF NOT EXISTS public.admin_users (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
     role TEXT NOT NULL DEFAULT 'admin',
     position TEXT,
     phone TEXT,
+    avatar TEXT,
+    specialty TEXT,
+    cedula TEXT,
+    active BOOLEAN NOT NULL DEFAULT true,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
@@ -27,6 +31,9 @@ ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'admin
 ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS position TEXT;
 ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS phone TEXT;
 ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS avatar TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS specialty TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS cedula TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS active BOOLEAN DEFAULT true;
 
 -- 3. TABLA DE CLIENTES (PORTAL CLIENTE SIEM)
 CREATE TABLE IF NOT EXISTS public.clients (
@@ -127,16 +134,21 @@ CREATE POLICY "Permitir todo en order_documents" ON public.order_documents FOR A
 DROP POLICY IF EXISTS "Permitir todo en audit_logs" ON public.audit_logs;
 CREATE POLICY "Permitir todo en audit_logs" ON public.audit_logs FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
 
--- 9. INSERCIÓN DE USUARIOS ADMINISTRADORES OFICIALES
-INSERT INTO public.admin_users (id, name, email, username, password_hash, role, position, phone)
+-- 9. INSERCIÓN DE USUARIOS ADMINISTRADORES Y PERSONAL TÉCNICO OFICIAL
+INSERT INTO public.admin_users (id, name, email, username, password_hash, role, position, phone, specialty, cedula, active)
 VALUES 
-  ('user-admin-ulises', 'Ulises Contreras', 'ucontreras@siemmx.com', 'ucontreras', 'Cuch#960303', 'admin', 'Líder de Metrología / Admin SIEM', '81-1982-3344'),
-  ('user-admin-harold', 'Harold Anguiano Morales', 'haroldo90@hotmail.com', 'haroldo90', 'Chevropar#1970', 'admin', 'Administrador Metrología SIEM', '81-1823-9901')
+  ('user-admin-ulises', 'Ulises Contreras', 'ucontreras@siemmx.com', 'ucontreras', 'Cuch#960303', 'admin', 'Líder de Metrología / Admin SIEM', '81-1982-3344', 'Humedad y Temperatura', 'CED-960303', true),
+  ('user-admin-harold', 'Harold Anguiano Morales', 'haroldo90@hotmail.com', 'haroldo90', 'Chevropar#1970', 'admin', 'Administrador Metrología SIEM', '81-1823-9901', 'Dimensional y Calidad', 'CED-197001', true),
+  ('user-admin-1', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'siem2026password', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', 'Masa y Presión', 'CED-182399', true)
 ON CONFLICT (id) DO UPDATE SET
   email = EXCLUDED.email,
   password_hash = EXCLUDED.password_hash,
   name = EXCLUDED.name,
-  position = EXCLUDED.position;
+  position = EXCLUDED.position,
+  phone = EXCLUDED.phone,
+  specialty = EXCLUDED.specialty,
+  cedula = EXCLUDED.cedula,
+  active = EXCLUDED.active;
 
 -- 10. INSERCIÓN DE CLIENTES DE PRUEBA
 INSERT INTO public.clients (id, razon_social, rfc, contact_name, email, phone, address, username, password_hash, active, notes)

@@ -77,12 +77,20 @@ export function getStoredAdminUsers(): User[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.ADMIN_USERS);
     if (!raw) return INITIAL_ADMIN_USERS;
-    const list: User[] = JSON.parse(raw);
-    const hasUlises = list.some(u => u.username === 'ucontreras');
-    const hasHarold = list.some(u => u.username === 'haroldo90');
-    if (!hasUlises || !hasHarold) {
-      localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(INITIAL_ADMIN_USERS));
-      return INITIAL_ADMIN_USERS;
+    let list: User[] = JSON.parse(raw);
+    
+    // Ensure Ulises and Harold exist
+    let modified = false;
+    for (const baseUser of INITIAL_ADMIN_USERS) {
+      const idx = list.findIndex(u => u.username === baseUser.username);
+      if (idx === -1) {
+        list.push(baseUser);
+        modified = true;
+      }
+    }
+
+    if (modified) {
+      localStorage.setItem(STORAGE_KEYS.ADMIN_USERS, JSON.stringify(list));
     }
     return list;
   } catch {

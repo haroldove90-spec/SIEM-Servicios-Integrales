@@ -13,7 +13,8 @@ import {
   Building2,
   RotateCcw,
   ChevronDown,
-  Database
+  Database,
+  BookOpen
 } from 'lucide-react';
 import { User, Client } from '../types';
 
@@ -28,6 +29,7 @@ interface SidebarProps {
   onSwitchRole: (role: 'admin' | 'client', clientId?: string) => void;
   onResetDemo: () => void;
   onOpenSupabaseModal?: () => void;
+  onOpenUserManual?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -41,6 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSwitchRole,
   onResetDemo,
   onOpenSupabaseModal,
+  onOpenUserManual,
 }) => {
   const isAdmin = currentUser.role === 'admin';
   const [showRoleMenu, setShowRoleMenu] = React.useState(false);
@@ -48,6 +51,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const adminNavItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'orders', label: 'Órdenes y Calibración', icon: ClipboardList },
+    { id: 'staff', label: 'Registro de Personal', icon: Users },
+    { id: 'clients', label: 'Directorio de Clientes', icon: Building2 },
     { id: 'profile', label: 'Perfil Técnico', icon: UserCheck },
   ];
 
@@ -128,6 +133,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
           );
         })}
+
+        {/* User Manual Button */}
+        {onOpenUserManual && (
+          <div className="pt-3 border-t border-[#085a85]/60 mt-3">
+            {!isCollapsed && (
+              <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-white/70 mb-1.5">
+                Ayuda y Guías
+              </p>
+            )}
+            <button
+              onClick={onOpenUserManual}
+              title={isCollapsed ? 'Manual de Usuario (PDF)' : undefined}
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer text-white/95 hover:bg-[#085a85] hover:text-white bg-[#085a85]/40 border border-[#096a9c] shadow-xs ${
+                isCollapsed ? 'justify-center px-0' : ''
+              }`}
+            >
+              <BookOpen className="w-4 h-4 shrink-0 text-amber-300" />
+              {!isCollapsed && <span className="truncate">Manual de Usuario</span>}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Role Switcher & User Profile Info */}

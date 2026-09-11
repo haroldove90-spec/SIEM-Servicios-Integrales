@@ -85,12 +85,26 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     username TEXT NOT NULL UNIQUE,
+    password_hash TEXT,
     role TEXT NOT NULL DEFAULT 'admin',
     position TEXT,
     phone TEXT,
     avatar TEXT,
+    specialty TEXT,
+    cedula TEXT,
+    active BOOLEAN NOT NULL DEFAULT true,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Asegurar columnas si la tabla ya existía previamente
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS password_hash TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'admin';
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS position TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS avatar TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS specialty TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS cedula TEXT;
+ALTER TABLE public.admin_users ADD COLUMN IF NOT EXISTS active BOOLEAN DEFAULT true;
 
 -- 3. INDEXES FOR PERFORMANCE
 CREATE INDEX IF NOT EXISTS idx_orders_folio ON public.service_orders(folio);
@@ -174,18 +188,21 @@ END $$;
 
 -- 6. SEED INITIAL DATA (Datos iniciales SIEM ISO/IEC 17025)
 
--- 6.1 Admin Users
-INSERT INTO public.admin_users (id, name, email, username, role, position, phone, avatar)
+-- 6.1 Admin Users y Personal Técnico
+INSERT INTO public.admin_users (id, name, email, username, password_hash, role, position, phone, specialty, cedula, active)
 VALUES
-    ('user-admin-1', 'Ulises Martínez', 'ulises.martinez@metrologia.com.mx', 'ulises.admin', 'admin', 'Líder de Metrología / Admin', '81-1982-3344', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'),
-    ('user-admin-2', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', NULL),
-    ('user-admin-3', 'Ana Laura Torres', 'ana.torres@metrologia.com.mx', 'ana.torres', 'admin', 'Técnica Metróloga - Temperatura', '81-1554-2011', NULL),
-    ('user-admin-4', 'Jorge Ramos', 'jorge.ramos@metrologia.com.mx', 'jorge.r', 'admin', 'Técnico Metrólogo de Campo', '81-1200-4488', NULL),
-    ('user-admin-5', 'María Elena Delgado', 'maria.delgado@metrologia.com.mx', 'maria.delgado', 'admin', 'Aseguramiento de Calidad', '81-1678-3000', NULL)
+    ('user-admin-ulises', 'Ulises Contreras', 'ucontreras@siemmx.com', 'ucontreras', 'Cuch#960303', 'admin', 'Líder de Metrología / Admin SIEM', '81-1982-3344', 'Humedad y Temperatura', 'CED-960303', true),
+    ('user-admin-harold', 'Harold Anguiano Morales', 'haroldo90@hotmail.com', 'haroldo90', 'Chevropar#1970', 'admin', 'Administrador Metrología SIEM', '81-1823-9901', 'Dimensional y Calidad', 'CED-197001', true),
+    ('user-admin-1', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'siem2026password', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', 'Masa y Presión', 'CED-182399', true)
 ON CONFLICT (id) DO UPDATE SET 
     name = EXCLUDED.name,
     email = EXCLUDED.email,
-    position = EXCLUDED.position;
+    password_hash = EXCLUDED.password_hash,
+    position = EXCLUDED.position,
+    phone = EXCLUDED.phone,
+    specialty = EXCLUDED.specialty,
+    cedula = EXCLUDED.cedula,
+    active = EXCLUDED.active;
 
 -- 6.2 Clients
 INSERT INTO public.clients (id, razon_social, rfc, contact_name, email, phone, address, username, password_hash, active, created_at, notes)
