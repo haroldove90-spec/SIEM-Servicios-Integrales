@@ -14,7 +14,8 @@ import {
   RotateCcw,
   ChevronDown,
   Database,
-  BookOpen
+  BookOpen,
+  X
 } from 'lucide-react';
 import { User, Client } from '../types';
 
@@ -30,6 +31,8 @@ interface SidebarProps {
   onResetDemo: () => void;
   onOpenSupabaseModal?: () => void;
   onOpenUserManual?: () => void;
+  isDrawer?: boolean;
+  onCloseDrawer?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -44,6 +47,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onResetDemo,
   onOpenSupabaseModal,
   onOpenUserManual,
+  isDrawer = false,
+  onCloseDrawer,
 }) => {
   const isAdmin = currentUser.role === 'admin';
   const [showRoleMenu, setShowRoleMenu] = React.useState(false);
@@ -63,52 +68,70 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const navItems = isAdmin ? adminNavItems : clientNavItems;
 
+  const handleSelectTab = (tabId: string) => {
+    setActiveTab(tabId);
+    if (isDrawer && onCloseDrawer) {
+      onCloseDrawer();
+    }
+  };
+
   return (
     <aside
-      className={`hidden md:flex flex-col bg-[#0A6EA2] text-white border-r border-[#085a85] transition-all duration-300 z-30 shrink-0 ${
-        isCollapsed ? 'w-20' : 'w-64'
-      }`}
+      className={
+        isDrawer
+          ? 'flex flex-col bg-[#0A6EA2] text-white w-72 max-w-[85vw] h-full shadow-2xl z-50'
+          : `hidden xl:flex flex-col bg-[#0A6EA2] text-white border-r border-[#085a85] transition-all duration-300 z-30 shrink-0 h-screen sticky top-0 ${
+              isCollapsed ? 'w-20' : 'w-64'
+            }`
+      }
     >
       {/* Sidebar Header */}
-      <div className="min-h-[4.5rem] py-3 flex items-center justify-between px-3 border-b border-[#085a85]">
-        {!isCollapsed ? (
-          <div className="flex items-center min-w-0 pr-1">
-            {/* Logo completo rectangular en su proporción original sin texto SIEM redundante */}
-            <div className="bg-white rounded-lg px-2.5 py-1.5 flex items-center justify-center shadow-xs">
-              <img
-                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-                alt="Logo SIEM"
-                className="h-10 w-auto max-w-[155px] object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
+      <div className="min-h-[5.5rem] py-3 flex items-center justify-between px-3 border-b border-[#085a85]">
+        {!isCollapsed || isDrawer ? (
+          <div className="flex items-center justify-center min-w-0 flex-1 pr-1">
+            {/* Logo Vertical en tamaño original sin encapsular para fullscreen y drawer */}
+            <img
+              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogo.png"
+              alt="Logo SIEM"
+              className="max-h-24 w-auto object-contain"
+              referrerPolicy="no-referrer"
+            />
           </div>
         ) : (
-          <div className="w-full flex items-center justify-center">
-            <div className="bg-white rounded-md p-1 flex items-center justify-center shadow-xs">
-              <img
-                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-                alt="Logo SIEM"
-                className="h-7 w-auto object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
+          <div className="w-full flex items-center justify-center py-1">
+            {/* Icono SIEM oficial cuando la barra está colapsada en desktop */}
+            <img
+              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemicono.png"
+              alt="Icono SIEM"
+              className="w-9 h-9 object-contain"
+              referrerPolicy="no-referrer"
+            />
           </div>
         )}
 
-        {/* Collapse Toggle Button */}
-        <button
-          onClick={onToggleCollapse}
-          className="p-1.5 rounded bg-[#085a85] hover:bg-[#074b6e] text-white/90 hover:text-white transition shrink-0 ml-1 cursor-pointer"
-          title={isCollapsed ? 'Expandir Menú' : 'Colapsar Menú'}
-        >
-          {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
+        {/* Action Button: X para cerrar en drawer, o botón de colapsar en desktop */}
+        {isDrawer ? (
+          <button
+            onClick={onCloseDrawer}
+            className="p-1.5 rounded bg-[#085a85] hover:bg-[#074b6e] text-white transition shrink-0 ml-1 cursor-pointer"
+            title="Cerrar Menú"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        ) : (
+          <button
+            onClick={onToggleCollapse}
+            className="p-1.5 rounded bg-[#085a85] hover:bg-[#074b6e] text-white/90 hover:text-white transition shrink-0 ml-1 cursor-pointer"
+            title={isCollapsed ? 'Expandir Menú' : 'Colapsar Menú'}
+          >
+            {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </button>
+        )}
       </div>
 
       {/* Navigation Modules */}
       <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
-        {!isCollapsed && (
+        {(!isCollapsed || isDrawer) && (
           <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-white/70 mb-2">
             Módulos
           </p>
@@ -120,16 +143,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              title={isCollapsed ? item.label : undefined}
+              onClick={() => handleSelectTab(item.id)}
+              title={isCollapsed && !isDrawer ? item.label : undefined}
               className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer ${
                 isActive
                   ? 'bg-white text-[#0A6EA2] font-extrabold shadow-sm'
                   : 'text-white/85 hover:bg-[#085a85] hover:text-white'
-              } ${isCollapsed ? 'justify-center px-0' : ''}`}
+              } ${isCollapsed && !isDrawer ? 'justify-center px-0' : ''}`}
             >
               <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#0A6EA2]' : 'text-white/90'}`} />
-              {!isCollapsed && <span className="truncate">{item.label}</span>}
+              {(!isCollapsed || isDrawer) && <span className="truncate">{item.label}</span>}
             </button>
           );
         })}
@@ -137,20 +160,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* User Manual Button */}
         {onOpenUserManual && (
           <div className="pt-3 border-t border-[#085a85]/60 mt-3">
-            {!isCollapsed && (
+            {(!isCollapsed || isDrawer) && (
               <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-white/70 mb-1.5">
                 Ayuda y Guías
               </p>
             )}
             <button
-              onClick={onOpenUserManual}
-              title={isCollapsed ? 'Manual de Usuario (PDF)' : undefined}
+              onClick={() => {
+                onOpenUserManual();
+                if (isDrawer && onCloseDrawer) onCloseDrawer();
+              }}
+              title={isCollapsed && !isDrawer ? 'Manual de Usuario (PDF)' : undefined}
               className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer text-white/95 hover:bg-[#085a85] hover:text-white bg-[#085a85]/40 border border-[#096a9c] shadow-xs ${
-                isCollapsed ? 'justify-center px-0' : ''
+                isCollapsed && !isDrawer ? 'justify-center px-0' : ''
               }`}
             >
               <BookOpen className="w-4 h-4 shrink-0 text-amber-300" />
-              {!isCollapsed && <span className="truncate">Manual de Usuario</span>}
+              {(!isCollapsed || isDrawer) && <span className="truncate">Manual de Usuario</span>}
             </button>
           </div>
         )}
@@ -158,7 +184,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Role Switcher & User Profile Info */}
       <div className="p-3 border-t border-[#085a85] space-y-2">
-        {!isCollapsed ? (
+        {!isCollapsed || isDrawer ? (
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
@@ -180,6 +206,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => {
                     setShowRoleMenu(false);
                     onSwitchRole('admin');
+                    if (isDrawer && onCloseDrawer) onCloseDrawer();
                   }}
                   className={`w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between ${
                     isAdmin ? 'bg-sky-50 font-bold text-[#0A6EA2]' : ''
@@ -203,6 +230,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       onClick={() => {
                         setShowRoleMenu(false);
                         onSwitchRole('client', c.id);
+                        if (isDrawer && onCloseDrawer) onCloseDrawer();
                       }}
                       className={`w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between truncate ${
                         isSelected ? 'bg-emerald-50 font-bold text-emerald-900' : ''
@@ -222,6 +250,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onClick={() => {
                       setShowRoleMenu(false);
                       onResetDemo();
+                      if (isDrawer && onCloseDrawer) onCloseDrawer();
                     }}
                     className="w-full text-left px-2 py-1.5 rounded text-amber-700 hover:bg-amber-50 flex items-center space-x-1.5 text-[11px] font-bold"
                   >
@@ -237,14 +266,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Supabase Cloud Connection & SQL Button */}
         {onOpenSupabaseModal && (
           <button
-            onClick={onOpenSupabaseModal}
+            onClick={() => {
+              onOpenSupabaseModal();
+              if (isDrawer && onCloseDrawer) onCloseDrawer();
+            }}
             title="Supabase Cloud & SQL"
             className={`w-full flex items-center space-x-2 px-3 py-2 rounded bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 hover:text-white border border-emerald-800/50 transition text-xs font-semibold uppercase tracking-wider ${
-              isCollapsed ? 'justify-center px-0' : ''
+              isCollapsed && !isDrawer ? 'justify-center px-0' : ''
             }`}
           >
             <Database className="w-4 h-4 shrink-0 text-emerald-400" />
-            {!isCollapsed && <span>Supabase Cloud</span>}
+            {(!isCollapsed || isDrawer) && <span>Supabase Cloud</span>}
           </button>
         )}
 
@@ -253,11 +285,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={onLogout}
           title="Cerrar Sesión"
           className={`w-full flex items-center space-x-2 px-3 py-2 rounded bg-red-950/60 hover:bg-red-900 text-red-200 hover:text-white transition text-xs font-bold uppercase tracking-wider ${
-            isCollapsed ? 'justify-center px-0' : ''
+            isCollapsed && !isDrawer ? 'justify-center px-0' : ''
           }`}
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          {!isCollapsed && <span>Cerrar Sesión</span>}
+          {(!isCollapsed || isDrawer) && <span>Cerrar Sesión</span>}
         </button>
       </div>
     </aside>

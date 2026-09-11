@@ -48,22 +48,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
       {/* Top Header Bar */}
-      <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
+      <div className="bg-white rounded-lg p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col gap-4">
+        {/* Línea 1: Título en 1 columna completa para que se lea proporcionado y sin comprimirse */}
+        <div className="w-full">
           <div className="flex items-center space-x-2 text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">
             <Activity className="w-3.5 h-3.5 text-slate-900" />
             <span>MÉTRICA / PANEL ADMINISTRATIVO</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
             Servicios Integrales en Equipos de Medición
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-3xl">
             Control de órdenes de servicio, calibraciones en proceso y repositorio de certificados oficiales ISO/IEC 17025.
           </p>
         </div>
 
-        {/* Quick Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+        {/* Línea 2: Botones de manual y acciones en segunda línea */}
+        <div className="w-full flex flex-wrap items-center gap-2.5 pt-3 border-t border-slate-100">
           {onOpenUserManual && (
             <button
               onClick={onOpenUserManual}

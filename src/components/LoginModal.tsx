@@ -97,18 +97,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden my-8">
         {/* Header */}
         <div className="bg-[#0A6EA2] px-6 py-6 text-white text-center relative">
-          <div className="w-16 h-16 mx-auto rounded-2xl bg-white p-2 shadow-lg mb-3 flex items-center justify-center">
+          <div className="flex justify-center mb-2">
             <img
-              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogo.png"
               alt="SIEM"
-              className="h-full w-full object-contain"
+              className="max-h-24 w-auto object-contain drop-shadow-xs"
               referrerPolicy="no-referrer"
             />
           </div>
-          <h2 className="text-xl font-extrabold tracking-tight text-white uppercase">
-            SIEM
-          </h2>
-          <p className="text-xs text-white/80 mt-0.5">
+          <p className="text-xs text-blue-100 mt-1">
             Acceso Seguro al Sistema
           </p>
 

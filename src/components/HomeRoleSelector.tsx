@@ -191,16 +191,22 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
     <div className="min-h-screen bg-slate-100/80 flex flex-col items-center justify-center p-4 sm:p-6 font-sans antialiased selection:bg-[#0A6EA2] selection:text-white">
       <div className="w-full max-w-md space-y-6 animate-in fade-in duration-300">
         
-        {/* LOGO DE SIEM - Ubicado arriba del formulario de acceso sin texto adicional */}
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center p-3 bg-white rounded-2xl shadow-sm border border-slate-200/90 transition-transform duration-200 hover:scale-[1.02]">
-            <img
-              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-              alt="Logo SIEM"
-              className="h-16 w-auto object-contain max-w-[260px]"
-              referrerPolicy="no-referrer"
-            />
-          </div>
+        {/* LOGO DE SIEM - Arriba del formulario de acceso, sin encapsular, tamaño original (Vertical en fullscreen y tablet, Horizontal en móvil) */}
+        <div className="text-center flex flex-col items-center justify-center">
+          {/* Versión Fullscreen y Tablet: Logo Vertical sin encapsular en proporción original */}
+          <img
+            src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogo.png"
+            alt="Logo SIEM"
+            className="hidden sm:block w-auto max-h-52 object-contain"
+            referrerPolicy="no-referrer"
+          />
+          {/* Versión Móvil: Logo Horizontal */}
+          <img
+            src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogohorizontal.png"
+            alt="Logo SIEM"
+            className="block sm:hidden w-auto max-h-14 object-contain"
+            referrerPolicy="no-referrer"
+          />
         </div>
 
         {/* FORMULARIO DE ACCESO AL SISTEMA */}

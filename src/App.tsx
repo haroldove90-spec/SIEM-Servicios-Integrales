@@ -36,7 +36,7 @@ import { ClientOrderDetail } from './components/Client/ClientOrderDetail';
 import { ClientProfile } from './components/Client/ClientProfile';
 import { UserManualModal } from './components/UserManual/UserManualModal';
 
-import { LogOut, Shield, Building2, Database, BookOpen } from 'lucide-react';
+import { LogOut, Shield, Building2, Database, BookOpen, Menu } from 'lucide-react';
 import { SupabaseStatusModal } from './components/SupabaseStatusModal';
 import {
   fetchClientsSupabase,
@@ -96,7 +96,9 @@ export default function App() {
 
   // Navigation State
   const [activeTab, setActiveTab] = useState<string>('dashboard');
+  // En fullscreen desktop la barra lateral inicia abierta; en tablet se oculta totalmente y se maneja por drawer
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 
   // Modals & Active View Selection
   const [viewingPdfDoc, setViewingPdfDoc] = useState<OrderDocument | null>(null);
@@ -459,7 +461,47 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased flex flex-row">
-      {/* Desktop Sidebar Navigation */}
+      {/* Mobile & Tablet Navigation Drawer Backdrop */}
+      {isMobileDrawerOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-40 xl:hidden transition-opacity"
+          onClick={() => setIsMobileDrawerOpen(false)}
+        />
+      )}
+
+      {/* Mobile & Tablet Navigation Drawer (Barra lateral totalmente oculta en tablet hasta que se abre) */}
+      <div
+        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out xl:hidden ${
+          isMobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <Sidebar
+          currentUser={user}
+          activeTab={activeTab}
+          setActiveTab={(tab) => {
+            setActiveTab(tab);
+            setIsMobileDrawerOpen(false);
+          }}
+          onLogout={handleLogout}
+          isCollapsed={false}
+          onToggleCollapse={() => {}}
+          clientsList={clients}
+          onSwitchRole={handleSwitchRole}
+          onResetDemo={handleResetDemoData}
+          onOpenSupabaseModal={() => {
+            setShowSupabaseModal(true);
+            setIsMobileDrawerOpen(false);
+          }}
+          onOpenUserManual={() => {
+            setShowUserManualModal(true);
+            setIsMobileDrawerOpen(false);
+          }}
+          isDrawer
+          onCloseDrawer={() => setIsMobileDrawerOpen(false)}
+        />
+      </div>
+
+      {/* Fullscreen Desktop Sidebar Navigation (Abierta por defecto en fullscreen, totalmente oculta en tablet y móvil) */}
       <Sidebar
         currentUser={user}
         activeTab={activeTab}
@@ -479,30 +521,32 @@ export default function App() {
         {/* Top App Header */}
         <header className="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20 shadow-xs">
           <div className="flex items-center space-x-3">
-            <div className="h-10 flex items-center shrink-0">
+            {/* Botón de apertura de barra de navegación para Tablet y Móvil */}
+            <button
+              onClick={() => setIsMobileDrawerOpen(true)}
+              className="xl:hidden p-1.5 rounded-lg text-slate-700 hover:text-[#0A6EA2] hover:bg-slate-100 transition cursor-pointer flex items-center justify-center"
+              title="Abrir barra de navegación"
+            >
+              <Menu className="w-6 h-6 text-[#0A6EA2]" />
+            </button>
+
+            {/* Botón de colapso para Fullscreen Desktop */}
+            <button
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className="hidden xl:flex p-1.5 rounded-lg text-slate-600 hover:text-[#0A6EA2] hover:bg-slate-100 transition cursor-pointer items-center justify-center"
+              title={isSidebarCollapsed ? 'Expandir barra lateral' : 'Colapsar barra lateral'}
+            >
+              <Menu className="w-5 h-5 text-[#0A6EA2]" />
+            </button>
+
+            {/* Imagen del Header: Logo Horizontal Oficial para Tablet, Móvil y Header General */}
+            <div className="flex items-center">
               <img
-                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-                alt="SIEM Logo"
-                className="h-8 w-auto object-contain max-w-[120px]"
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogohorizontal.png"
+                alt="Logo SIEM"
+                className="h-8 sm:h-9 w-auto max-w-[180px] sm:max-w-[230px] object-contain"
                 referrerPolicy="no-referrer"
               />
-            </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-sm text-slate-900 uppercase tracking-tight hidden sm:inline">
-                  SIEM
-                </span>
-                <span
-                  className={`text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded ${
-                    isAdmin ? 'bg-[#0A6EA2] text-white' : 'bg-emerald-100 text-emerald-800'
-                  }`}
-                >
-                  {isAdmin ? 'Admin' : 'Cliente'}
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block">
-                ISO/IEC 17025 • {user.name || user.username}
-              </p>
             </div>
           </div>
 

@@ -44,36 +44,23 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Brand logo & title */}
+          {/* Brand logo & icon */}
           <div className="flex items-center space-x-3">
-            <div className="h-9 flex items-center shrink-0">
+            <div className="hidden sm:flex items-center shrink-0">
               <img
-                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-                alt="SIEM Logo"
-                className="h-8 w-auto object-contain max-w-[120px]"
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemicono.png"
+                alt="Icono SIEM"
+                className="h-8 w-8 object-contain"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-base tracking-tight text-slate-900 uppercase hidden sm:inline">
-                  SIEM
-                </span>
-                <span
-                  className={`text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded ${
-                    isAdmin
-                      ? 'bg-[#0A6EA2] text-white'
-                      : 'bg-emerald-100 text-emerald-800'
-                  }`}
-                >
-                  {isAdmin ? 'Admin' : 'Cliente'}
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-500 hidden sm:block">
-                {isAdmin
-                  ? 'Gestión de Laboratorio & Certificados ISO/IEC 17025'
-                  : currentUser.name || 'Acceso Corporativo de Cliente'}
-              </p>
+            <div className="flex sm:hidden items-center shrink-0">
+              <img
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogohorizontal.png"
+                alt="Logo SIEM"
+                className="h-8 w-auto object-contain max-w-[150px]"
+                referrerPolicy="no-referrer"
+              />
             </div>
           </div>
 

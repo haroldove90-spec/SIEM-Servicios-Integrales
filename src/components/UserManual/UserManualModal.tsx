@@ -153,14 +153,12 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
         {/* Top Modal Toolbar (Hidden when printing) */}
         <div className="bg-[#0A6EA2] text-white px-5 py-3.5 flex items-center justify-between print:hidden shrink-0 shadow-xs">
           <div className="flex items-center space-x-3">
-            <div className="bg-white p-1 rounded-md">
-              <img
-                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
-                alt="Logo SIEM"
-                className="h-6 w-auto object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
+            <img
+              src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemicono.png"
+              alt="Logo SIEM"
+              className="h-7 w-auto object-contain"
+              referrerPolicy="no-referrer"
+            />
             <div>
               <h2 className="text-sm font-bold tracking-wide uppercase flex items-center gap-2">
                 <span>Manual de Usuario y Operación</span>
@@ -339,9 +337,9 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
           <div className="border-b-4 border-[#0A6EA2] pb-6 mb-8 text-center">
             <div className="flex justify-center mb-4">
               <img
-                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siem.png"
+                src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogo.png"
                 alt="Logo SIEM"
-                className="h-16 w-auto object-contain"
+                className="h-28 w-auto object-contain"
                 referrerPolicy="no-referrer"
               />
             </div>
