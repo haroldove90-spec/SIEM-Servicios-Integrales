@@ -52,11 +52,11 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
             onClick={() => setActiveTab(item.id)}
             className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-[10px] font-bold uppercase tracking-wider transition ${
               isActive
-                ? 'text-[#0A6EA2] border-t-2 border-[#0A6EA2] bg-sky-50/50'
+                ? 'text-[#022B47] border-t-2 border-[#237781] bg-slate-50'
                 : 'text-slate-500 hover:text-slate-900'
             }`}
           >
-            <Icon className={`w-4 h-4 mb-0.5 ${isActive ? 'text-[#0A6EA2]' : 'text-slate-400'}`} />
+            <Icon className={`w-4 h-4 mb-0.5 ${isActive ? 'text-[#237781]' : 'text-slate-400'}`} />
             <span className="truncate max-w-[64px]">{item.label}</span>
           </button>
         );

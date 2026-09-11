@@ -79,14 +79,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside
       className={
         isDrawer
-          ? 'flex flex-col bg-[#0A6EA2] text-white w-72 max-w-[85vw] h-full shadow-2xl z-50'
-          : `hidden xl:flex flex-col bg-[#0A6EA2] text-white border-r border-[#085a85] transition-all duration-300 z-30 shrink-0 h-screen sticky top-0 ${
+          ? 'flex flex-col bg-[#022B47] text-white w-72 max-w-[85vw] h-full shadow-2xl z-50'
+          : `hidden xl:flex flex-col bg-[#022B47] text-white border-r border-[#03395d] transition-all duration-300 z-30 shrink-0 h-screen sticky top-0 ${
               isCollapsed ? 'w-20' : 'w-64'
             }`
       }
     >
       {/* Sidebar Header */}
-      <div className="min-h-[5.5rem] py-3 flex items-center justify-between px-3 border-b border-[#085a85]">
+      <div className="min-h-[5.5rem] py-3 flex items-center justify-between px-3 border-b border-[#03395d]">
         {!isCollapsed || isDrawer ? (
           <div className="flex items-center justify-center min-w-0 flex-1 pr-1">
             {/* Logo Vertical en tamaño original sin encapsular para fullscreen y drawer */}
@@ -113,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {isDrawer ? (
           <button
             onClick={onCloseDrawer}
-            className="p-1.5 rounded bg-[#085a85] hover:bg-[#074b6e] text-white transition shrink-0 ml-1 cursor-pointer"
+            className="p-1.5 rounded bg-[#237781] hover:bg-[#1b5e66] text-white transition shrink-0 ml-1 cursor-pointer"
             title="Cerrar Menú"
           >
             <X className="w-5 h-5" />
@@ -121,7 +121,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         ) : (
           <button
             onClick={onToggleCollapse}
-            className="p-1.5 rounded bg-[#085a85] hover:bg-[#074b6e] text-white/90 hover:text-white transition shrink-0 ml-1 cursor-pointer"
+            className="p-1.5 rounded bg-[#03395d] hover:bg-[#237781] text-white/90 hover:text-white transition shrink-0 ml-1 cursor-pointer"
             title={isCollapsed ? 'Expandir Menú' : 'Colapsar Menú'}
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -147,11 +147,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               title={isCollapsed && !isDrawer ? item.label : undefined}
               className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer ${
                 isActive
-                  ? 'bg-white text-[#0A6EA2] font-extrabold shadow-sm'
-                  : 'text-white/85 hover:bg-[#085a85] hover:text-white'
+                  ? 'bg-[#237781] text-white font-extrabold shadow-sm'
+                  : 'text-white/85 hover:bg-[#03395d] hover:text-white'
               } ${isCollapsed && !isDrawer ? 'justify-center px-0' : ''}`}
             >
-              <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-[#0A6EA2]' : 'text-white/90'}`} />
+              <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-white/90'}`} />
               {(!isCollapsed || isDrawer) && <span className="truncate">{item.label}</span>}
             </button>
           );
@@ -159,7 +159,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* User Manual Button */}
         {onOpenUserManual && (
-          <div className="pt-3 border-t border-[#085a85]/60 mt-3">
+          <div className="pt-3 border-t border-[#03395d] mt-3">
             {(!isCollapsed || isDrawer) && (
               <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-white/70 mb-1.5">
                 Ayuda y Guías
@@ -171,7 +171,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 if (isDrawer && onCloseDrawer) onCloseDrawer();
               }}
               title={isCollapsed && !isDrawer ? 'Manual de Usuario (PDF)' : undefined}
-              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer text-white/95 hover:bg-[#085a85] hover:text-white bg-[#085a85]/40 border border-[#096a9c] shadow-xs ${
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded text-xs font-semibold uppercase tracking-wider transition cursor-pointer text-white hover:bg-[#1b5e66] bg-[#237781] border border-[#237781]/60 shadow-xs ${
                 isCollapsed && !isDrawer ? 'justify-center px-0' : ''
               }`}
             >
@@ -183,12 +183,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Role Switcher & User Profile Info */}
-      <div className="p-3 border-t border-[#085a85] space-y-2">
+      <div className="p-3 border-t border-[#03395d] space-y-2">
         {!isCollapsed || isDrawer ? (
           <div className="relative">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="w-full flex items-center justify-between p-2 rounded bg-[#085a85] hover:bg-[#074b6e] text-white text-xs font-semibold transition cursor-pointer"
+              className="w-full flex items-center justify-between p-2 rounded bg-[#03395d] hover:bg-[#237781] text-white text-xs font-semibold transition cursor-pointer"
             >
               <div className="flex items-center space-x-2 truncate">
                 {isAdmin ? <Shield className="w-3.5 h-3.5 text-white" /> : <Building2 className="w-3.5 h-3.5 text-emerald-300" />}
@@ -209,14 +209,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     if (isDrawer && onCloseDrawer) onCloseDrawer();
                   }}
                   className={`w-full text-left px-3 py-2 hover:bg-slate-50 flex items-center justify-between ${
-                    isAdmin ? 'bg-sky-50 font-bold text-[#0A6EA2]' : ''
+                    isAdmin ? 'bg-sky-50 font-bold text-[#022B47]' : ''
                   }`}
                 >
                   <div className="flex items-center space-x-2">
-                    <Shield className="w-4 h-4 text-[#0A6EA2]" />
+                    <Shield className="w-4 h-4 text-[#237781]" />
                     <span>Ulises Contreras (Admin)</span>
                   </div>
-                  {isAdmin && <span className="text-[10px] text-[#0A6EA2] font-bold uppercase">ACTIVO</span>}
+                  {isAdmin && <span className="text-[10px] text-[#237781] font-bold uppercase">ACTIVO</span>}
                 </button>
 
                 <div className="px-3 py-1.5 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 border-t">

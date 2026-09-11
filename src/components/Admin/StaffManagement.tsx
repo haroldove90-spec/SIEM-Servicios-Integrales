@@ -231,8 +231,8 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div>
-          <div className="flex items-center space-x-2 text-[#0A6EA2] text-xs font-bold uppercase tracking-wider">
-            <Users className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-[#022B47] text-xs font-bold uppercase tracking-wider">
+            <Users className="w-4 h-4 text-[#237781]" />
             <span>Módulo de Control y Acreditación</span>
           </div>
           <h2 className="text-xl font-bold text-slate-900 tracking-tight">
@@ -246,7 +246,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={handleOpenAdd}
-            className="px-4 py-2.5 bg-[#0A6EA2] hover:bg-[#085a85] text-white rounded-xl text-xs font-bold shadow-md transition flex items-center space-x-2 cursor-pointer"
+            className="px-4 py-2.5 bg-[#237781] hover:bg-[#1b5e66] text-white rounded-xl text-xs font-bold shadow-md transition flex items-center space-x-2 cursor-pointer"
           >
             <UserPlus className="w-4 h-4" />
             <span>+ Registrar Personal</span>
@@ -267,7 +267,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-slate-500">Total Personal</span>
-            <div className="p-2 rounded-lg bg-sky-50 text-[#0A6EA2]">
+            <div className="p-2 rounded-lg bg-sky-50 text-[#237781]">
               <Users className="w-4 h-4" />
             </div>
           </div>
@@ -322,7 +322,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
             placeholder="Buscar por nombre, usuario, especialidad o correo..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:bg-white"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] focus:bg-white"
           />
         </div>
         <span className="text-xs text-slate-500 font-medium shrink-0">
@@ -346,7 +346,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
               <div className="p-5 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-3">
-                    <div className="w-11 h-11 rounded-xl bg-linear-to-br from-[#0A6EA2] to-sky-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                    <div className="w-11 h-11 rounded-xl bg-linear-to-br from-[#022B47] to-[#237781] text-white flex items-center justify-center font-bold text-sm shadow-sm">
                       {staff.name
                         .split(' ')
                         .filter(Boolean)
@@ -359,7 +359,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                       <h3 className="font-bold text-slate-900 text-sm leading-tight">
                         {staff.name}
                       </h3>
-                      <p className="text-xs text-[#0A6EA2] font-semibold mt-0.5">
+                      <p className="text-xs text-[#022B47] font-semibold mt-0.5">
                         {staff.position || 'Personal Técnico'}
                       </p>
                     </div>
@@ -472,7 +472,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                 <button
                   type="button"
                   onClick={() => handleOpenEdit(staff)}
-                  className="px-2 py-2 rounded-lg bg-white hover:bg-slate-100 text-[#0A6EA2] border border-slate-200 text-xs font-semibold transition flex items-center justify-center space-x-1 cursor-pointer"
+                  className="px-2 py-2 rounded-lg bg-white hover:bg-slate-100 text-[#237781] border border-slate-200 text-xs font-semibold transition flex items-center justify-center space-x-1 cursor-pointer"
                   title="Editar datos o cambiar clave"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
@@ -498,7 +498,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden my-6 animate-in zoom-in-95 duration-150">
             {/* Modal Header */}
-            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#022B47] text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <UserPlus className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">
@@ -536,7 +536,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     placeholder="ej. Ing. Carlos Daniel García"
                     value={name}
                     onChange={(e) => handleNameChange(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   />
                 </div>
 
@@ -549,7 +549,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     placeholder="cgarcia@siemmx.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   />
                 </div>
 
@@ -562,7 +562,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     placeholder="81-2345-6789"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   />
                 </div>
 
@@ -575,7 +575,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     placeholder="ej. Metrólogo Dimensional"
                     value={position}
                     onChange={(e) => setPosition(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   />
                 </div>
 
@@ -588,7 +588,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     placeholder="ej. Presión y Temperatura"
                     value={specialty}
                     onChange={(e) => setSpecialty(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   />
                 </div>
 
@@ -601,7 +601,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                     placeholder="ej. CED-894125 / ISO-17025"
                     value={cedula}
                     onChange={(e) => setCedula(e.target.value)}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   />
                 </div>
 
@@ -612,7 +612,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value as 'admin' | 'client')}
-                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                    className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
                   >
                     <option value="admin">Administrador / Personal Interno</option>
                     <option value="client">Técnico Operativo</option>
@@ -624,7 +624,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
               <div className="bg-sky-50/70 border border-sky-200 rounded-xl p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-sky-950 flex items-center space-x-1.5">
-                    <Key className="w-4 h-4 text-[#0A6EA2]" />
+                    <Key className="w-4 h-4 text-[#237781]" />
                     <span>Credenciales de Acceso al Sistema</span>
                   </span>
 
@@ -634,7 +634,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                       const sec = generateSecurePassword(12);
                       setPassword(sec);
                     }}
-                    className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-bold flex items-center space-x-1 cursor-pointer bg-white px-2 py-1 rounded-md border border-sky-200 shadow-2xs"
+                    className="text-[11px] text-[#237781] hover:text-[#1b5e66] font-bold flex items-center space-x-1 cursor-pointer bg-white px-2 py-1 rounded-md border border-sky-200 shadow-2xs"
                     title="Generar contraseña de alta seguridad con números, letras y símbolos"
                   >
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -653,7 +653,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                       placeholder="usuario.acceso"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
-                      className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] font-mono font-bold text-slate-800"
+                      className="w-full px-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] font-mono font-bold text-slate-800"
                     />
                   </div>
 
@@ -666,7 +666,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
                       placeholder="Contraseña segura"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] font-mono text-slate-800"
+                      className="w-full py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] font-mono text-slate-800"
                     />
                   </div>
                 </div>
@@ -704,7 +704,7 @@ export const StaffManagement: React.FC<StaffManagementProps> = ({
 
                   <button
                     type="submit"
-                    className="w-full sm:w-auto px-4 py-2 bg-[#0A6EA2] hover:bg-[#085a85] text-white rounded-lg text-xs font-bold shadow-sm transition cursor-pointer"
+                    className="w-full sm:w-auto px-4 py-2 bg-[#237781] hover:bg-[#1b5e66] text-white rounded-lg text-xs font-bold shadow-sm transition cursor-pointer"
                   >
                     Guardar Personal
                   </button>

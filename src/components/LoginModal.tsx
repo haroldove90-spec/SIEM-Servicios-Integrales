@@ -96,7 +96,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden my-8">
         {/* Header */}
-        <div className="bg-[#0A6EA2] px-6 py-6 text-white text-center relative">
+        <div className="bg-[#022B47] px-6 py-6 text-white text-center relative">
           <div className="flex justify-center mb-2">
             <img
               src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogo.png"
@@ -105,12 +105,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               referrerPolicy="no-referrer"
             />
           </div>
-          <p className="text-xs text-blue-100 mt-1">
+          <p className="text-xs text-sky-100/80 mt-1">
             Acceso Seguro al Sistema
           </p>
 
           {/* Role selector tabs */}
-          <div className="mt-5 grid grid-cols-2 gap-1 p-1 bg-[#085a85] rounded-xl border border-white/20">
+          <div className="mt-5 grid grid-cols-2 gap-1 p-1 bg-[#012137] rounded-xl border border-white/20">
             <button
               type="button"
               onClick={() => {
@@ -119,11 +119,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               }}
               className={`py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeTab === 'admin'
-                  ? 'bg-white text-[#0A6EA2] font-bold shadow-xs'
+                  ? 'bg-white text-[#022B47] font-bold shadow-xs'
                   : 'text-white/80 hover:text-white'
               }`}
             >
-              <Shield className="w-3.5 h-3.5" />
+              <Shield className="w-3.5 h-3.5 text-[#237781]" />
               <span>Personal Interno</span>
             </button>
             <button
@@ -134,11 +134,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
               }}
               className={`py-2 px-3 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-1.5 cursor-pointer ${
                 activeTab === 'client'
-                  ? 'bg-white text-[#0A6EA2] font-bold shadow-xs'
+                  ? 'bg-white text-[#022B47] font-bold shadow-xs'
                   : 'text-white/80 hover:text-white'
               }`}
             >
-              <Building2 className="w-3.5 h-3.5" />
+              <Building2 className="w-3.5 h-3.5 text-[#237781]" />
               <span>Portal Cliente</span>
             </button>
           </div>
@@ -169,7 +169,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   placeholder={
                     activeTab === 'admin' ? 'ucontreras o correo' : 'usuario asignado'
                   }
-                  className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:bg-white text-slate-800"
+                  className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] focus:bg-white text-slate-800"
                 />
               </div>
             </div>
@@ -183,13 +183,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:bg-white text-slate-800"
+                className="w-full py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] focus:bg-white text-slate-800"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-2.5 rounded-lg text-sm font-bold text-white bg-[#0A6EA2] hover:bg-[#085a85] shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
+              className="w-full py-2.5 rounded-lg text-sm font-bold text-white bg-[#237781] hover:bg-[#1b5e66] shadow-md transition flex items-center justify-center space-x-2 cursor-pointer"
             >
               <KeyRound className="w-4 h-4" />
               <span>

@@ -192,7 +192,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
 
         <button
           onClick={handleOpenAddModal}
-          className="px-4 py-2.5 rounded-xl bg-[#0A6EA2] hover:bg-[#085a85] text-white font-semibold text-xs shadow-md shadow-blue-100 transition flex items-center justify-center space-x-1.5 shrink-0 cursor-pointer"
+          className="px-4 py-2.5 rounded-xl bg-[#237781] hover:bg-[#1b5e66] text-white font-semibold text-xs shadow-md transition flex items-center justify-center space-x-1.5 shrink-0 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Alta de Nuevo Cliente</span>
@@ -208,7 +208,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
             placeholder="Buscar por Razón Social, RFC, Contacto o Correo..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] text-slate-800"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] text-slate-800"
           />
         </div>
 
@@ -217,7 +217,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="py-1.5 px-3 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] text-slate-700 font-medium"
+            className="py-1.5 px-3 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] text-slate-700 font-medium"
           >
             <option value="all">Todos los Estatus</option>
             <option value="active">Activos</option>
@@ -347,7 +347,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden my-8">
-            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#022B47] text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Building2 className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">Alta de Nuevo Cliente CRM</h3>
@@ -460,7 +460,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
                       const sec = generateSecurePassword(12);
                       setFormData({ ...formData, passwordHash: sec });
                     }}
-                    className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-semibold flex items-center space-x-1 cursor-pointer"
+                    className="text-[11px] text-[#237781] hover:text-[#1b5e66] font-semibold flex items-center space-x-1 cursor-pointer"
                   >
                     <Sparkles className="w-3 h-3 text-amber-500" />
                     <span>Generar Clave Segura</span>
@@ -507,7 +507,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-[#237781] hover:bg-[#1b5e66] rounded-lg shadow"
                 >
                   Guardar Cliente
                 </button>
@@ -521,7 +521,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
       {selectedClientForCredentials && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
-            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between">
+            <div className="px-6 py-4 bg-[#022B47] text-white flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Key className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">Generador de Credenciales</h3>
@@ -561,7 +561,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
                     <button
                       type="button"
                       onClick={() => setGenPassword(generateSecurePassword(12))}
-                      className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-semibold flex items-center space-x-1 cursor-pointer"
+                      className="text-[11px] text-[#237781] hover:text-[#1b5e66] font-semibold flex items-center space-x-1 cursor-pointer"
                       title="Generar contraseña segura con letras, números y símbolos"
                     >
                       <Sparkles className="w-3 h-3 text-amber-500" />
@@ -644,7 +644,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
                   <button
                     type="button"
                     onClick={handleSaveCredentials}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-lg shadow cursor-pointer"
+                    className="px-4 py-2 bg-[#237781] hover:bg-[#1b5e66] text-white text-xs font-semibold rounded-lg shadow cursor-pointer"
                   >
                     Guardar Cambios
                   </button>
@@ -659,7 +659,7 @@ export const ClientManagement: React.FC<ClientManagementProps> = ({
       {selectedClientDetail && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden my-8 max-h-[90vh] flex flex-col">
-            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-[#022B47] text-white flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-2">
                 <Building2 className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">Ficha Detallada del Cliente</h3>

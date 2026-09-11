@@ -212,7 +212,7 @@ export const AdminProfile: React.FC<AdminProfileProps> = ({
                     setNewPassword(secure);
                     setConfirmPassword(secure);
                   }}
-                  className="text-[11px] text-[#0A6EA2] hover:text-[#085a85] font-semibold flex items-center space-x-1 cursor-pointer"
+                  className="text-[11px] text-[#237781] hover:text-[#1b5e66] font-semibold flex items-center space-x-1 cursor-pointer"
                   title="Generar contraseña segura con letras, números y símbolos"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -249,7 +249,7 @@ export const AdminProfile: React.FC<AdminProfileProps> = ({
 
             <button
               type="submit"
-              className="w-full py-2.5 bg-[#0A6EA2] hover:bg-[#085a85] text-white font-semibold text-xs rounded-lg shadow transition cursor-pointer"
+              className="w-full py-2.5 bg-[#237781] hover:bg-[#1b5e66] text-white font-semibold text-xs rounded-lg shadow transition cursor-pointer"
             >
               Actualizar Contraseña
             </button>
@@ -261,12 +261,12 @@ export const AdminProfile: React.FC<AdminProfileProps> = ({
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <div className="flex items-center space-x-2">
-            <Users className="w-5 h-5 text-[#0A6EA2]" />
+            <Users className="w-5 h-5 text-[#022B47]" />
             <h3 className="font-bold text-slate-900 text-base">
               Equipo de Trabajo Interno de Metrología (5 Integrantes)
             </h3>
           </div>
-          <span className="text-xs font-bold bg-sky-50 text-[#0A6EA2] px-2.5 py-1 rounded-full">
+          <span className="text-xs font-bold bg-sky-50 text-[#022B47] px-2.5 py-1 rounded-full">
             Técnicos Autorizados
           </span>
         </div>
@@ -281,7 +281,7 @@ export const AdminProfile: React.FC<AdminProfileProps> = ({
                   : 'bg-slate-50 border-slate-200'
               }`}
             >
-              <div className="w-10 h-10 rounded-full bg-[#0A6EA2] text-white flex items-center justify-center font-bold text-sm shrink-0">
+              <div className="w-10 h-10 rounded-full bg-[#022B47] text-white flex items-center justify-center font-bold text-sm shrink-0">
                 {member.name.slice(0, 2).toUpperCase()}
               </div>
               <div className="min-w-0 flex-1">

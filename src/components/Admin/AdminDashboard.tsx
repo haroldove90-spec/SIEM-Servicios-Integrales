@@ -68,31 +68,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {onOpenUserManual && (
             <button
               onClick={onOpenUserManual}
-              className="px-3.5 py-2 border border-sky-300 bg-sky-50 hover:bg-sky-100 text-[#0A6EA2] text-xs font-bold uppercase tracking-wider rounded transition flex items-center space-x-1.5 cursor-pointer shadow-2xs"
+              className="px-3.5 py-2 border border-[#237781]/40 bg-[#237781]/10 hover:bg-[#237781]/20 text-[#237781] text-xs font-bold uppercase tracking-wider rounded transition flex items-center space-x-1.5 cursor-pointer shadow-2xs"
               title="Abrir Manual de Usuario para consultar o descargar en PDF"
             >
-              <BookOpen className="w-4 h-4 text-[#0A6EA2]" />
+              <BookOpen className="w-4 h-4 text-[#237781]" />
               <span>Manual de Usuario (PDF)</span>
             </button>
           )}
           <button
             onClick={() => onNavigate('staff')}
-            className="px-3.5 py-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold uppercase tracking-wider rounded transition flex items-center space-x-1.5 cursor-pointer"
+            className="px-3.5 py-2 border border-slate-200 bg-white hover:border-[#237781] hover:text-[#237781] text-slate-800 text-xs font-bold uppercase tracking-wider rounded transition flex items-center space-x-1.5 cursor-pointer"
             title="Administración y registro de personal técnico"
           >
-            <Users className="w-4 h-4 text-[#0A6EA2]" />
+            <Users className="w-4 h-4 text-[#237781]" />
             <span>Personal Técnico</span>
           </button>
           <button
             onClick={() => onNavigate('orders')}
-            className="px-4 py-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold uppercase tracking-wider rounded transition flex items-center space-x-1.5 cursor-pointer"
+            className="px-4 py-2 border border-slate-200 bg-white hover:border-[#237781] hover:text-[#237781] text-slate-800 text-xs font-bold uppercase tracking-wider rounded transition flex items-center space-x-1.5 cursor-pointer"
           >
             <ClipboardList className="w-4 h-4 text-slate-700" />
             <span>Ver Órdenes</span>
           </button>
           <button
             onClick={onOpenNewOrderModal}
-            className="px-4 py-2 bg-[#0A6EA2] hover:bg-[#085a85] text-white text-xs font-bold uppercase tracking-wider rounded shadow-sm transition flex items-center space-x-1.5 cursor-pointer"
+            className="px-4 py-2 bg-[#237781] hover:bg-[#1b5e66] text-white text-xs font-bold uppercase tracking-wider rounded shadow-sm transition flex items-center space-x-1.5 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4 text-white" />
             <span>Nueva Orden SIEM</span>
@@ -295,17 +295,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
           {/* Quick User Manual Card */}
           {onOpenUserManual && (
-            <div className="bg-gradient-to-br from-[#0A6EA2] to-[#085a85] text-white rounded-lg p-5 shadow-sm space-y-3">
+            <div className="bg-gradient-to-br from-[#022B47] to-[#011d30] text-white rounded-lg p-5 shadow-sm space-y-3">
               <div className="flex items-center space-x-2">
                 <BookOpen className="w-5 h-5 text-amber-300" />
                 <h3 className="font-bold text-sm tracking-wide">Manual de Operación Oficial</h3>
               </div>
-              <p className="text-xs text-sky-100 leading-relaxed">
+              <p className="text-xs text-sky-100/90 leading-relaxed">
                 Guía completa para registrar clientes, crear órdenes, actualizar estados y descargar certificados en PDF.
               </p>
               <button
                 onClick={onOpenUserManual}
-                className="w-full py-2 px-3 bg-white hover:bg-sky-50 text-[#0A6EA2] rounded-md font-bold text-xs uppercase tracking-wider transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2 px-3 bg-[#237781] hover:bg-[#1b5e66] text-white rounded-md font-bold text-xs uppercase tracking-wider transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>Consultar y Descargar PDF</span>
                 <ArrowRight className="w-3.5 h-3.5" />

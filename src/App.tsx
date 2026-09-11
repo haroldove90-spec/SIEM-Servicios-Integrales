@@ -524,19 +524,19 @@ export default function App() {
             {/* Botón de apertura de barra de navegación para Tablet y Móvil */}
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="xl:hidden p-1.5 rounded-lg text-slate-700 hover:text-[#0A6EA2] hover:bg-slate-100 transition cursor-pointer flex items-center justify-center"
+              className="xl:hidden p-1.5 rounded-lg text-slate-700 hover:text-[#022B47] hover:bg-slate-100 transition cursor-pointer flex items-center justify-center"
               title="Abrir barra de navegación"
             >
-              <Menu className="w-6 h-6 text-[#0A6EA2]" />
+              <Menu className="w-6 h-6 text-[#022B47]" />
             </button>
 
             {/* Botón de colapso para Fullscreen Desktop */}
             <button
               onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="hidden xl:flex p-1.5 rounded-lg text-slate-600 hover:text-[#0A6EA2] hover:bg-slate-100 transition cursor-pointer items-center justify-center"
+              className="hidden xl:flex p-1.5 rounded-lg text-slate-600 hover:text-[#022B47] hover:bg-slate-100 transition cursor-pointer items-center justify-center"
               title={isSidebarCollapsed ? 'Expandir barra lateral' : 'Colapsar barra lateral'}
             >
-              <Menu className="w-5 h-5 text-[#0A6EA2]" />
+              <Menu className="w-5 h-5 text-[#022B47]" />
             </button>
 
             {/* Imagen del Header: Logo Horizontal Oficial para Tablet, Móvil y Header General */}
@@ -555,10 +555,10 @@ export default function App() {
             {/* User Manual & PDF Export Button */}
             <button
               onClick={() => setShowUserManualModal(true)}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-[#0A6EA2] border border-sky-300 text-xs font-bold transition cursor-pointer shadow-2xs"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#237781] hover:bg-[#1b5e66] text-white text-xs font-bold transition cursor-pointer shadow-xs"
               title="Manual de Usuario y Operación (Descargar en PDF)"
             >
-              <BookOpen className="w-3.5 h-3.5 text-[#0A6EA2]" />
+              <BookOpen className="w-3.5 h-3.5 text-white" />
               <span className="hidden sm:inline">Manual (PDF)</span>
             </button>
 

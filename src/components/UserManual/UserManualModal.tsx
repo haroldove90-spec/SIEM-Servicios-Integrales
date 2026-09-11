@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   BookOpen,
   Printer,
@@ -62,22 +63,28 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
   // Escape key and print isolation
   useEffect(() => {
     if (!isOpen) return;
+    document.body.classList.add('siem-printing-document');
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.classList.remove('siem-printing-document');
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === 'undefined') return null;
 
   const handlePrintManual = () => {
-    // Scroll to top for print
+    // Scroll to top for clean multi-page print
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo(0, 0);
     }
     window.scrollTo(0, 0);
-    window.print();
+    setTimeout(() => {
+      window.print();
+    }, 100);
   };
 
   const handleCopyQuickGuide = () => {
@@ -115,32 +122,77 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
     { id: 'faq', title: '10. Preguntas Frecuentes y Soporte', icon: HelpCircle }
   ];
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-2 sm:p-4 backdrop-blur-xs siem-modal-overlay-print overflow-y-auto">
       {/* Dynamic print stylesheet for Manual */}
       <style>{`
+        @media screen {
+          .manual-print-view {
+            display: none !important;
+          }
+        }
         @media print {
           @page {
             size: A4 portrait;
             margin: 12mm 15mm 15mm 15mm;
           }
-          body {
+          html, body {
             background: #ffffff !important;
             color: #0f172a !important;
-            font-family: system-ui, -apple-system, sans-serif !important;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            height: auto !important;
+            min-height: auto !important;
+            overflow: visible !important;
+          }
+          .siem-modal-overlay-print {
+            position: static !important;
+            display: block !important;
+            visibility: visible !important;
+            width: 100% !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            background: transparent !important;
+            backdrop-filter: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            inset: auto !important;
+            z-index: auto !important;
+          }
+          .siem-modal-content-print {
+            position: static !important;
+            display: block !important;
+            visibility: visible !important;
+            width: 100% !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
           }
           .manual-screen-only {
             display: none !important;
+            height: 0 !important;
+            max-height: 0 !important;
+            overflow: hidden !important;
+            visibility: hidden !important;
           }
           .manual-print-view {
             display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
             width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
+            overflow: visible !important;
           }
           .manual-chapter-break {
             page-break-before: always !important;
             break-before: page !important;
+            padding-top: 14px !important;
           }
           .manual-avoid-break {
             page-break-inside: avoid !important;
@@ -149,9 +201,9 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
         }
       `}</style>
 
-      <div className="bg-white w-full max-w-5xl rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-300 siem-modal-content-print max-h-[92vh]">
+      <div className="bg-white w-full max-w-5xl rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-300 siem-modal-content-print max-h-[92vh] print:max-h-none print:h-auto print:overflow-visible print:border-none print:shadow-none print:m-0 print:p-0">
         {/* Top Modal Toolbar (Hidden when printing) */}
-        <div className="bg-[#0A6EA2] text-white px-5 py-3.5 flex items-center justify-between print:hidden shrink-0 shadow-xs">
+        <div className="bg-[#022B47] text-white px-5 py-3.5 flex items-center justify-between print:hidden shrink-0 shadow-xs">
           <div className="flex items-center space-x-3">
             <img
               src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemicono.png"
@@ -184,10 +236,10 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
 
             <button
               onClick={handlePrintManual}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-white hover:bg-sky-50 text-[#0A6EA2] text-xs font-bold transition shadow-sm cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-[#237781] hover:bg-[#1b5e66] text-white text-xs font-bold transition shadow-sm cursor-pointer"
               title="Descargar o imprimir manual completo en PDF"
             >
-              <Printer className="w-3.5 h-3.5 text-[#0A6EA2]" />
+              <Printer className="w-3.5 h-3.5 text-white" />
               <span>Descargar en PDF</span>
             </button>
 
@@ -212,7 +264,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar tema o función..."
-                className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2]"
+                className="w-full pl-8 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781]"
               />
             </div>
 
@@ -232,7 +284,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
                       onClick={() => setActiveSection(sec.id)}
                       className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium flex items-center space-x-2.5 transition cursor-pointer ${
                         isActive
-                          ? 'bg-[#0A6EA2] text-white font-semibold shadow-xs'
+                          ? 'bg-[#022B47] text-white font-semibold shadow-xs'
                           : 'text-slate-700 hover:bg-slate-200/70'
                       }`}
                     >
@@ -246,7 +298,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
             <div className="mt-auto pt-4 border-t border-slate-200 text-[11px] text-slate-500 space-y-2">
               <div className="bg-sky-50 border border-sky-200 rounded-lg p-2.5 text-sky-800">
                 <p className="font-semibold text-xs mb-0.5 flex items-center gap-1">
-                  <Laptop className="w-3 h-3 text-[#0A6EA2]" />
+                  <Laptop className="w-3 h-3 text-[#237781]" />
                   <span>Modo PDF Portátil</span>
                 </p>
                 <p className="text-[10px] text-sky-700 leading-relaxed">
@@ -272,7 +324,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
             {/* Header Banner */}
             <div className="mb-6 pb-4 border-b border-slate-200 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold text-[#0A6EA2] bg-sky-50 px-2 py-0.5 rounded border border-sky-200 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-[#022B47] bg-sky-50 px-2 py-0.5 rounded border border-sky-200 uppercase tracking-wider">
                   Guía Oficial de Usuario SIEM
                 </span>
                 <h1 className="text-xl md:text-2xl font-black text-slate-900 mt-1">
@@ -282,7 +334,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
 
               <button
                 onClick={handlePrintManual}
-                className="hidden md:flex items-center gap-1.5 text-xs text-[#0A6EA2] hover:text-[#085a85] font-semibold border border-[#0A6EA2]/30 px-3 py-1.5 rounded-lg hover:bg-sky-50 transition cursor-pointer"
+                className="hidden md:flex items-center gap-1.5 text-xs text-[#237781] hover:text-[#1b5e66] font-semibold border border-[#237781]/30 px-3 py-1.5 rounded-lg hover:bg-teal-50 transition cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Imprimir este tema o todo el manual</span>
@@ -320,7 +372,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
                   if (idx < sections.length - 1) setActiveSection(sections[idx + 1].id);
                 }}
                 disabled={sections.findIndex((s) => s.id === activeSection) === sections.length - 1}
-                className="px-3 py-1.5 rounded bg-[#0A6EA2] text-white hover:bg-[#085a85] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1"
+                className="px-3 py-1.5 rounded bg-[#237781] text-white hover:bg-[#1b5e66] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer flex items-center gap-1"
               >
                 <span>Siguiente Capítulo</span>
                 <ChevronRight className="w-3.5 h-3.5" />
@@ -332,9 +384,9 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
         {/* =========================================================================
             COMPLETE PRINTABLE BOOKLET VIEW (RENDERED WHEN PRINTING TO PDF)
             ========================================================================= */}
-        <div className="hidden print:block p-8 bg-white text-slate-900 manual-print-view siem-printable-area">
+        <div className="manual-print-view print:block p-8 bg-white text-slate-900 siem-printable-area">
           {/* Cover Page */}
-          <div className="border-b-4 border-[#0A6EA2] pb-6 mb-8 text-center">
+          <div className="border-b-4 border-[#022B47] pb-6 mb-8 text-center">
             <div className="flex justify-center mb-4">
               <img
                 src="https://dkcapqljyznnimiczlpr.supabase.co/storage/v1/object/public/logo/siemlogo.png"
@@ -343,7 +395,7 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
                 referrerPolicy="no-referrer"
               />
             </div>
-            <h1 className="text-3xl font-black tracking-tight text-[#0A6EA2] uppercase">
+            <h1 className="text-3xl font-black tracking-tight text-[#022B47] uppercase">
               Manual de Usuario y Operación
             </h1>
             <p className="text-sm font-bold text-slate-700 uppercase tracking-widest mt-1">
@@ -376,70 +428,70 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
           {/* All Chapters sequentially rendered for clean multi-page print */}
           <div className="space-y-10">
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 1. Introducción y Acceso al Sistema
               </h2>
               <SectionIntro />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 2. Registro de Personal y Contraseñas
               </h2>
               <SectionStaff />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 3. Registro y Edición de Clientes
               </h2>
               <SectionClients />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 4. Crear una Orden de Servicio
               </h2>
               <SectionOrders />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 5. Editar y Cambiar Estados
               </h2>
               <SectionStatus />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 6. Expediente Digital y Documentos
               </h2>
               <SectionDocuments />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 7. Cómo Extraer y Guardar en PDF
               </h2>
               <SectionPdfExport />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 8. Guía para el Portal del Cliente
               </h2>
               <SectionClientPortal />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 9. Administración de Supabase Cloud
               </h2>
               <SectionSupabase />
             </div>
 
             <div className="manual-chapter-break">
-              <h2 className="text-xl font-black text-[#0A6EA2] border-b-2 border-slate-200 pb-2 mb-4">
+              <h2 className="text-xl font-black text-[#022B47] border-b-2 border-slate-200 pb-2 mb-4">
                 10. Preguntas Frecuentes y Soporte
               </h2>
               <SectionFaq />
@@ -452,7 +504,8 @@ export const UserManualModal: React.FC<UserManualModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
@@ -469,8 +522,8 @@ function SectionIntro() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-3">
         <div className="p-3.5 bg-sky-50/70 border border-sky-200 rounded-lg">
-          <div className="flex items-center space-x-2 text-[#0A6EA2] font-bold text-xs mb-1.5">
-            <Shield className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-[#022B47] font-bold text-xs mb-1.5">
+            <Shield className="w-4 h-4 text-[#237781]" />
             <span>Perfil Administrador / Técnico</span>
           </div>
           <p className="text-[11px] text-slate-600 mb-2">
@@ -518,7 +571,7 @@ function SectionClients() {
 
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
         <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
-          <span className="w-5 h-5 bg-[#0A6EA2] text-white rounded-full flex items-center justify-center text-[10px]">1</span>
+          <span className="w-5 h-5 bg-[#022B47] text-white rounded-full flex items-center justify-center text-[10px]">1</span>
           <span>Paso a Paso: Dar de Alta un Nuevo Cliente</span>
         </h3>
 
@@ -579,8 +632,8 @@ function SectionOrders() {
       </p>
 
       <div className="bg-sky-50/60 border border-sky-200 rounded-lg p-4 space-y-3">
-        <h3 className="font-bold text-[#0A6EA2] text-xs uppercase tracking-wide flex items-center gap-1.5">
-          <span className="w-5 h-5 bg-[#0A6EA2] text-white rounded-full flex items-center justify-center text-[10px]">✓</span>
+        <h3 className="font-bold text-[#022B47] text-xs uppercase tracking-wide flex items-center gap-1.5">
+          <span className="w-5 h-5 bg-[#237781] text-white rounded-full flex items-center justify-center text-[10px]">✓</span>
           <span>Flujo para Generar una Nueva Orden</span>
         </h3>
 
@@ -708,7 +761,7 @@ function SectionDocuments() {
 
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
         <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wide flex items-center gap-1.5">
-          <FolderOpen className="w-4 h-4 text-[#0A6EA2]" />
+          <FolderOpen className="w-4 h-4 text-[#237781]" />
           <span>Gestión de Archivos en el Expediente</span>
         </h3>
 
@@ -738,8 +791,8 @@ function SectionPdfExport() {
   return (
     <div className="space-y-4 text-xs leading-relaxed text-slate-700">
       <div className="p-3.5 bg-sky-50 border border-sky-200 rounded-lg">
-        <h3 className="font-bold text-[#0A6EA2] text-xs uppercase tracking-wide mb-1 flex items-center gap-1.5">
-          <Printer className="w-4 h-4" />
+        <h3 className="font-bold text-[#022B47] text-xs uppercase tracking-wide mb-1 flex items-center gap-1.5">
+          <Printer className="w-4 h-4 text-[#237781]" />
           <span>Extracción Directa a PDF con Formato Membretado Oficial</span>
         </h3>
         <p className="text-[11px] text-sky-800">
@@ -751,7 +804,7 @@ function SectionPdfExport() {
         {/* Caso 1: Orden de Servicio */}
         <div className="border border-slate-200 rounded-lg p-3.5 bg-white space-y-2 shadow-2xs">
           <h4 className="font-bold text-slate-900 text-xs flex items-center gap-1.5">
-            <ClipboardList className="w-4 h-4 text-[#0A6EA2]" />
+            <ClipboardList className="w-4 h-4 text-[#237781]" />
             <span>A) Extraer Orden de Servicio en PDF</span>
           </h4>
           <ol className="list-decimal list-inside text-[11px] text-slate-600 space-y-1 pl-1">
@@ -887,7 +940,7 @@ function SectionStaff() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3.5 space-y-2">
           <div className="flex items-center space-x-2 text-slate-900 font-bold">
-            <span className="w-5 h-5 rounded-full bg-[#0A6EA2] text-white flex items-center justify-center text-[10px]">
+            <span className="w-5 h-5 rounded-full bg-[#022B47] text-white flex items-center justify-center text-[10px]">
               1
             </span>
             <span>Acceso al Módulo</span>
@@ -899,7 +952,7 @@ function SectionStaff() {
 
         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3.5 space-y-2">
           <div className="flex items-center space-x-2 text-slate-900 font-bold">
-            <span className="w-5 h-5 rounded-full bg-[#0A6EA2] text-white flex items-center justify-center text-[10px]">
+            <span className="w-5 h-5 rounded-full bg-[#022B47] text-white flex items-center justify-center text-[10px]">
               2
             </span>
             <span>Generar Contraseña Segura</span>
@@ -911,7 +964,7 @@ function SectionStaff() {
 
         <div className="bg-slate-50 border border-slate-200 rounded-lg p-3.5 space-y-2">
           <div className="flex items-center space-x-2 text-slate-900 font-bold">
-            <span className="w-5 h-5 rounded-full bg-[#0A6EA2] text-white flex items-center justify-center text-[10px]">
+            <span className="w-5 h-5 rounded-full bg-[#022B47] text-white flex items-center justify-center text-[10px]">
               3
             </span>
             <span>Ver Contraseña (Icono Ojito)</span>
@@ -1005,8 +1058,11 @@ function SectionSupabase() {
           <div>
             <span className="text-slate-400 block text-[10px] uppercase tracking-wider mb-0.5">Contraseña Maestra:</span>
             <div className="flex items-center space-x-2">
-              <span className="text-amber-400 font-mono font-bold tracking-wider">
+              <span className="text-amber-400 font-mono font-bold tracking-wider print:hidden">
                 {showPassword ? 'Cuch#960303' : '••••••••••••'}
+              </span>
+              <span className="hidden print:inline text-amber-300 font-mono font-bold tracking-wider">
+                Cuch#960303
               </span>
               <button
                 type="button"
@@ -1053,7 +1109,7 @@ function SectionSupabase() {
       {/* Explicación de los botones en la interfaz */}
       <div className="bg-sky-50 border border-sky-200 rounded-lg p-3 text-[11px] text-sky-900 space-y-1">
         <span className="font-bold flex items-center space-x-1.5">
-          <Database className="w-3.5 h-3.5 text-[#0A6EA2]" />
+          <Database className="w-3.5 h-3.5 text-[#237781]" />
           <span>Acceso rápido permanente en la barra superior:</span>
         </span>
         <p className="text-slate-600">

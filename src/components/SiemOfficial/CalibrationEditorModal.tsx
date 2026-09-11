@@ -111,7 +111,7 @@ export const CalibrationEditorModal: React.FC<CalibrationEditorModalProps> = ({
       <div className="bg-white w-full max-w-4xl rounded-xl shadow-2xl overflow-hidden flex flex-col my-auto border border-slate-200">
         
         {/* Header */}
-        <div className="bg-[#0A6EA2] text-white px-6 py-4 flex items-center justify-between border-b border-[#085a85]">
+        <div className="bg-[#022B47] text-white px-6 py-4 flex items-center justify-between border-b border-[#012137]">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/20 text-white border border-white/30">
@@ -491,7 +491,7 @@ export const CalibrationEditorModal: React.FC<CalibrationEditorModalProps> = ({
 
             <button
               type="submit"
-              className="flex items-center gap-2 px-5 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-sm transition"
+              className="flex items-center gap-2 px-5 py-2 text-xs font-bold bg-[#237781] hover:bg-[#1b5e66] text-white rounded-lg shadow-sm transition"
             >
               <Save className="w-4 h-4" />
               <span>Guardar Certificado F-7.2</span>

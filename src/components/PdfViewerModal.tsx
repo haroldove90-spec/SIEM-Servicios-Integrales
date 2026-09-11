@@ -41,7 +41,7 @@ export const PdfViewerModal: React.FC<PdfViewerModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-3 sm:p-6 animate-in fade-in duration-200">
       <div className="bg-white rounded-xl shadow-2xl border border-slate-200 w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="px-5 py-4 bg-[#0A6EA2] text-white flex items-center justify-between border-b border-[#085a85]">
+        <div className="px-5 py-4 bg-[#022B47] text-white flex items-center justify-between border-b border-[#012137]">
           <div className="flex items-center space-x-3 min-w-0">
             <div className="p-2 bg-white/10 rounded-lg border border-white/20 text-white shrink-0">
               <FileText className="w-5 h-5" />
@@ -72,7 +72,7 @@ export const PdfViewerModal: React.FC<PdfViewerModalProps> = ({
             </button>
             <button
               onClick={handleDownload}
-              className="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-medium shadow transition flex items-center space-x-1.5"
+              className="px-3 py-2 rounded-lg bg-[#237781] hover:bg-[#1b5e66] text-white text-xs font-medium shadow transition flex items-center space-x-1.5"
             >
               <Download className="w-4 h-4" />
               <span>Descargar PDF</span>

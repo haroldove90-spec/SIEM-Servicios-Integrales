@@ -400,7 +400,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
 
           <button
             onClick={handleOpenCreateModal}
-            className="px-4 py-2 rounded-xl bg-[#0A6EA2] hover:bg-[#085a85] text-white font-semibold text-xs shadow-md shadow-blue-100 transition flex items-center space-x-1.5 shrink-0 cursor-pointer"
+            className="px-4 py-2 rounded-xl bg-[#237781] hover:bg-[#1b5e66] text-white font-semibold text-xs shadow-md transition flex items-center space-x-1.5 shrink-0 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Nueva Orden SIEM</span>
@@ -420,7 +420,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
               placeholder="Buscar por folio, cliente, instrumento o serie..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] text-slate-800"
+              className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] text-slate-800"
             />
           </div>
 
@@ -429,7 +429,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] font-medium text-slate-700"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] font-medium text-slate-700"
             >
               <option value="all">Todos los Estatus</option>
               <option value="En Proceso">En Proceso</option>
@@ -443,7 +443,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
             <select
               value={clientFilter}
               onChange={(e) => setClientFilter(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] font-medium text-slate-700"
+              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] font-medium text-slate-700"
             >
               <option value="all">Todos los Clientes</option>
               {clients.map((c) => (
@@ -460,7 +460,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
       <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-600">
-            <thead className="bg-[#0A6EA2] text-white font-bold uppercase tracking-wider text-[11px]">
+            <thead className="bg-[#022B47] text-white font-bold uppercase tracking-wider text-[11px]">
               <tr>
                 <th className="px-4 py-3">Folio Orden</th>
                 <th className="px-4 py-3">Cliente / Razón Social</th>
@@ -690,7 +690,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-3 overflow-y-auto">
           <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden my-6 max-h-[92vh] flex flex-col">
             
-            <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between shrink-0">
+            <div className="px-6 py-4 bg-[#022B47] text-white flex items-center justify-between shrink-0">
               <div className="flex items-center space-x-2">
                 <ClipboardList className="w-5 h-5 text-white" />
                 <h3 className="font-bold text-base">
@@ -985,7 +985,7 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-sm"
+                  className="px-5 py-2 text-xs font-bold text-white bg-[#237781] hover:bg-[#1b5e66] rounded-lg shadow-sm"
                 >
                   {editingOrder ? 'Guardar Cambios' : 'Registrar Orden SIEM'}
                 </button>

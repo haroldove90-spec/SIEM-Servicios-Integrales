@@ -103,7 +103,7 @@ export const ClientOrderDetail: React.FC<ClientOrderDetailProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden my-6 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 bg-[#0A6EA2] text-white flex items-center justify-between shrink-0">
+        <div className="px-6 py-4 bg-[#022B47] text-white flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-white/10 rounded-lg border border-white/20 text-white">
               <FileCheck2 className="w-5 h-5" />

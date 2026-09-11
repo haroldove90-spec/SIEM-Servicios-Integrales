@@ -188,7 +188,7 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-100/80 flex flex-col items-center justify-center p-4 sm:p-6 font-sans antialiased selection:bg-[#0A6EA2] selection:text-white">
+    <div className="min-h-screen bg-slate-100/80 flex flex-col items-center justify-center p-4 sm:p-6 font-sans antialiased selection:bg-[#022B47] selection:text-white">
       <div className="w-full max-w-md space-y-6 animate-in fade-in duration-300">
         
         {/* LOGO DE SIEM - Arriba del formulario de acceso, sin encapsular, tamaño original (Vertical en fullscreen y tablet, Horizontal en móvil) */}
@@ -211,12 +211,12 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
 
         {/* FORMULARIO DE ACCESO AL SISTEMA */}
         <div className="bg-white rounded-2xl shadow-md border border-slate-200/90 overflow-hidden">
-          <div className="bg-[#0A6EA2] px-6 py-4 text-white">
+          <div className="bg-[#022B47] px-6 py-4 text-white">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-white flex items-center space-x-2">
               <LogIn className="w-4 h-4 text-white shrink-0" />
               <span>Acceso al Sistema</span>
             </h2>
-            <p className="text-xs text-blue-100 mt-0.5">
+            <p className="text-xs text-sky-100/80 mt-0.5">
               Ingrese con su usuario o correo electrónico y contraseña
             </p>
           </div>
@@ -252,7 +252,7 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
                     onChange={(e) => setIdentifier(e.target.value)}
                     placeholder="Usuario o correo electrónico"
                     autoComplete="username"
-                    className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:border-[#0A6EA2] focus:bg-white text-slate-900 font-medium transition"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] focus:border-[#237781] focus:bg-white text-slate-900 font-medium transition"
                   />
                 </div>
               </div>
@@ -272,7 +272,7 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
                     autoComplete="current-password"
-                    className="w-full pl-9 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0A6EA2] focus:border-[#0A6EA2] focus:bg-white text-slate-900 font-medium transition"
+                    className="w-full pl-9 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#237781] focus:border-[#237781] focus:bg-white text-slate-900 font-medium transition"
                   />
                   <button
                     type="button"
@@ -285,10 +285,10 @@ export const HomeRoleSelector: React.FC<HomeRoleSelectorProps> = ({
                 </div>
               </div>
 
-              {/* Botón de envío con tono azul #0A6EA2 */}
+              {/* Botón de envío con tono azul #237781 */}
               <button
                 type="submit"
-                className="w-full py-3 bg-[#0A6EA2] hover:bg-[#085a85] active:bg-[#06476b] text-white font-extrabold text-xs uppercase tracking-wider rounded-lg shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
+                className="w-full py-3 bg-[#237781] hover:bg-[#1b5e66] active:bg-[#164a51] text-white font-extrabold text-xs uppercase tracking-wider rounded-lg shadow-sm transition flex items-center justify-center space-x-2 cursor-pointer"
               >
                 <LogIn className="w-4 h-4" />
                 <span>Ingresar al Sistema</span>
