@@ -135,20 +135,31 @@ DROP POLICY IF EXISTS "Permitir todo en audit_logs" ON public.audit_logs;
 CREATE POLICY "Permitir todo en audit_logs" ON public.audit_logs FOR ALL TO anon, authenticated USING (true) WITH CHECK (true);
 
 -- 9. INSERCIÓN DE USUARIOS ADMINISTRADORES Y PERSONAL TÉCNICO OFICIAL
+-- Limpiar registros existentes con estos correos o usernames para prevenir colisiones de clave única
+DELETE FROM public.admin_users 
+WHERE email IN (
+  'carlos.mendez@metrologia.com.mx',
+  'ucontreras@siemmx.com',
+  'haroldo90@hotmail.com',
+  'ulises.martinez@metrologia.com.mx',
+  'ana.torres@metrologia.com.mx',
+  'jorge.ramos@metrologia.com.mx',
+  'maria.delgado@metrologia.com.mx'
+) OR username IN (
+  'carlos.m',
+  'ucontreras',
+  'haroldo90',
+  'ulises.admin',
+  'ana.torres',
+  'jorge.r',
+  'maria.delgado'
+) OR id IN ('user-admin-ulises', 'user-admin-harold', 'user-admin-1', 'user-admin-2', 'user-admin-3', 'user-admin-4', 'user-admin-5');
+
 INSERT INTO public.admin_users (id, name, email, username, password_hash, role, position, phone, specialty, cedula, active)
 VALUES 
   ('user-admin-ulises', 'Ulises Contreras', 'ucontreras@siemmx.com', 'ucontreras', 'Cuch#960303', 'admin', 'Líder de Metrología / Admin SIEM', '81-1982-3344', 'Humedad y Temperatura', 'CED-960303', true),
   ('user-admin-harold', 'Harold Anguiano Morales', 'haroldo90@hotmail.com', 'haroldo90', 'Chevropar#1970', 'admin', 'Administrador Metrología SIEM', '81-1823-9901', 'Dimensional y Calidad', 'CED-197001', true),
-  ('user-admin-1', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'siem2026password', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', 'Masa y Presión', 'CED-182399', true)
-ON CONFLICT (id) DO UPDATE SET
-  email = EXCLUDED.email,
-  password_hash = EXCLUDED.password_hash,
-  name = EXCLUDED.name,
-  position = EXCLUDED.position,
-  phone = EXCLUDED.phone,
-  specialty = EXCLUDED.specialty,
-  cedula = EXCLUDED.cedula,
-  active = EXCLUDED.active;
+  ('user-admin-1', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'siem2026password', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', 'Masa y Presión', 'CED-182399', true);
 
 -- 10. INSERCIÓN DE CLIENTES DE PRUEBA
 INSERT INTO public.clients (id, razon_social, rfc, contact_name, email, phone, address, username, password_hash, active, notes)

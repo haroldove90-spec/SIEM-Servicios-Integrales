@@ -189,20 +189,31 @@ END $$;
 -- 6. SEED INITIAL DATA (Datos iniciales SIEM ISO/IEC 17025)
 
 -- 6.1 Admin Users y Personal Técnico
+-- Limpiar registros existentes con estos correos o usernames para prevenir colisiones de clave única
+DELETE FROM public.admin_users 
+WHERE email IN (
+  'carlos.mendez@metrologia.com.mx',
+  'ucontreras@siemmx.com',
+  'haroldo90@hotmail.com',
+  'ulises.martinez@metrologia.com.mx',
+  'ana.torres@metrologia.com.mx',
+  'jorge.ramos@metrologia.com.mx',
+  'maria.delgado@metrologia.com.mx'
+) OR username IN (
+  'carlos.m',
+  'ucontreras',
+  'haroldo90',
+  'ulises.admin',
+  'ana.torres',
+  'jorge.r',
+  'maria.delgado'
+) OR id IN ('user-admin-ulises', 'user-admin-harold', 'user-admin-1', 'user-admin-2', 'user-admin-3', 'user-admin-4', 'user-admin-5');
+
 INSERT INTO public.admin_users (id, name, email, username, password_hash, role, position, phone, specialty, cedula, active)
 VALUES
     ('user-admin-ulises', 'Ulises Contreras', 'ucontreras@siemmx.com', 'ucontreras', 'Cuch#960303', 'admin', 'Líder de Metrología / Admin SIEM', '81-1982-3344', 'Humedad y Temperatura', 'CED-960303', true),
     ('user-admin-harold', 'Harold Anguiano Morales', 'haroldo90@hotmail.com', 'haroldo90', 'Chevropar#1970', 'admin', 'Administrador Metrología SIEM', '81-1823-9901', 'Dimensional y Calidad', 'CED-197001', true),
-    ('user-admin-1', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'siem2026password', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', 'Masa y Presión', 'CED-182399', true)
-ON CONFLICT (id) DO UPDATE SET 
-    name = EXCLUDED.name,
-    email = EXCLUDED.email,
-    password_hash = EXCLUDED.password_hash,
-    position = EXCLUDED.position,
-    phone = EXCLUDED.phone,
-    specialty = EXCLUDED.specialty,
-    cedula = EXCLUDED.cedula,
-    active = EXCLUDED.active;
+    ('user-admin-1', 'Carlos Méndez', 'carlos.mendez@metrologia.com.mx', 'carlos.m', 'siem2026password', 'admin', 'Técnico de Masa y Presión', '81-1823-9901', 'Masa y Presión', 'CED-182399', true);
 
 -- 6.2 Clients
 INSERT INTO public.clients (id, razon_social, rfc, contact_name, email, phone, address, username, password_hash, active, created_at, notes)
